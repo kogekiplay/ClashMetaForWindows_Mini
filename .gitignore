@@ -1,3 +1,4 @@
-_pycache
+**/__pycache__
 build
 dist
+config.yaml

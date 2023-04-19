@@ -1,0 +1,12 @@
+<service>
+    <startmode>Automatic</startmode>
+    <id>Clash.Meta</id>
+    <name>Clash.Meta Core Service</name>
+    <description>运行Clash Meta核心</description>
+    <executable>%BASE%/clash.exe</executable>
+    <arguments>-d ./resources/ -f ../../config.yaml</arguments>
+    <log mode="roll-by-time">
+        <pattern>yyyyMMdd</pattern>
+    </log>
+    <logpath>%BASE%\logs</logpath>
+</service>

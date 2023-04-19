@@ -1,0 +1,245 @@
+#Clash Meta 模板
+#时间：2023.4.2
+#只需要在149,154,159行填入机场订阅链接即可，如果有更多机场自行添加
+#如果修改了名字记得把其他地方的名字也一并修改
+#Tips:请自行修改183行开始的地区正则过滤
+#参考：
+#香港：(?i)港|hk|hongkong|kong kong|🇭🇰
+#台湾：(?i)台|tw|taiwan
+#日本：(?i)日本|jp|japan|🇯🇵
+#美国：(?i)美|us|unitedstates|united states|🇺🇸
+#新加坡： (?i)^(?!.*(?:us)).*(新|sg|singapore|🇸🇬
+
+# 端口设置
+mixed-port: 7890
+tproxy-port: 7891
+
+# Clash.Meta 设置
+unified-delay: false
+geodata-mode: true
+tcp-concurrent: false
+find-process-mode: off
+global-client-fingerprint: chrome
+geox-url:
+  mmdb: "https://ghproxy.wushidi.gay/https://github.com/kogekiplay/geoip/releases/download/latest/Country.mmdb"
+  geoip: "https://ghproxy.wushidi.gay/https://github.com/kogekiplay/clash-rules-dat/releases/download/latest/geoip.dat"
+  geosite: "https://ghproxy.wushidi.gay/https://github.com/kogekiplay/clash-rules-dat/releases/download/latest/geosite.dat"
+
+# Meta 域名嗅探
+sniffer:
+  enable: true
+  sniff:
+      TLS:
+        ports: [443, 8443]
+
+      HTTP:
+        ports: [80, 8080-8880]
+        override-destination: true
+  skip-domain:
+    - 'Mijia Cloud'
+    - 'dlg.io.mi.com'
+    - '+.apple.com'
+  # - '*.baidu.com'
+  force-domain:
+  # - '+'
+    - 'google.com'
+
+# Host
+hosts:
+  'time.android.com': 203.107.6.88
+  'time.facebook.com': 203.107.6.88
+  'localhost': 127.0.0.1
+
+# Tun Mode
+tun:
+  enable: true
+  stack: system
+  dns-hijack:
+    - '0.0.0.0:53'
+  auto-route: true
+  auto-detect-interface: true
+
+# Clash 设置
+allow-lan: true
+mode: rule
+log-level: info
+ipv6: true
+udp: true
+external-controller: 0.0.0.0:9090
+external-ui: ../dashboard
+secret: ""
+
+# 存储选择记录
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+# dns设置
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  use-hosts: true
+  ipv6: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 28.0.0.1/8
+  fake-ip-filter:
+    - '*'
+    - '+.lan'
+  default-nameserver:
+    - 223.5.5.5
+    - 127.0.0.1:53
+  nameserver:
+    - 'https://8.8.8.8/dns-query#🔬 Dns Proxy'
+    - 'https://1.1.1.1/dns-query#🔬 Dns Proxy'
+  proxy-server-nameserver:
+    - https://dns.alidns.com/dns-query
+  nameserver-policy:
+    "geosite:cn,private":
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+
+proxies:
+#锚点
+p: &p
+  type: http
+  interval: 43200
+  health-check:
+    enable: true
+    url: http://cp.cloudflare.com/
+    interval: 300
+
+#改下面代理提供商的名字的话，这里面的名字也需要一并修改
+u: &u
+  type: select
+  use:
+    - Nexitally
+    - Other
+    - 自建
+
+nex: &nex
+  type: url-test
+  use:
+    - Nexitally
+  url: "https://cp.cloudflare.com/"
+  interval: 300
+
+pr: &pr
+  type: select
+  proxies:
+    - 🏳️‍⚧️ Proxy
+    - 🇭🇰 Hong Kong
+    - 🇨🇳 Taiwan
+    - 🇯🇵 Japan
+    - 🇸🇬 Singapore
+    - 🇺🇸 United States
+    - 🫧 Global Region
+    - 🪄 Select
+    - 🪢 Direct
+    - 🧬 Reject
+
+proxy-providers:
+
+  Nexitally:
+      <<: *p
+      url: ""
+      path: ./proxy_providers/1.yaml
+
+  Other:
+      <<: *p
+      url: ""
+      path: ./proxy_providers/2.yaml
+
+  自建:
+      <<: *p
+      url: ""
+      path: ./proxy_providers/3.yaml
+
+proxy-groups:
+
+  - name: 🏳️‍⚧️ Proxy
+    type: select
+    proxies:
+      - ✨ Auto
+      - 🇭🇰 Hong Kong
+      - 🇨🇳 Taiwan
+      - 🇯🇵 Japan
+      - 🇸🇬 Singapore
+      - 🇺🇸 United States
+      - 🫧 Global Region
+      - 🪄 Select
+      - 🪢 Direct
+
+#社交
+  - name:  💭 Chat
+    <<: *pr
+
+#流媒体
+  - name: 🏙️ Stream
+    <<: *pr
+
+#Dns过代理
+  - name: 🔬 Dns Proxy
+    <<: *pr
+
+#分隔，下面是地区分组
+  - name: ✨ Auto
+    filter: "HK|TW|JP"
+    <<: *nex
+
+  - name: 🇭🇰 Hong Kong
+    filter: "HK"
+    <<: *nex
+
+  - name: 🇨🇳 Taiwan
+    filter: "TW"
+    <<: *nex
+
+  - name: 🇯🇵 Japan
+    filter: "JP"
+    <<: *nex
+
+  - name: 🇺🇸 United States
+    filter: "US"
+    <<: *nex
+
+  - name: 🇸🇬 Singapore
+    filter: "SG"
+    <<: *nex
+
+  - name: 🫧 Global Region
+    filter: "^(?!.*(?:HK|JP|TW|US|SG)).*"
+    <<: *u
+
+  - name: 🪄 Select
+    <<: *u
+
+# 加上emoji
+  - name: 🪢 Direct
+    type: select
+    proxies:
+      - DIRECT
+
+  - name: 🧬 Reject
+    type: select
+    proxies:
+      - REJECT
+
+rules:
+  - GEOSITE,telegram,💭 Chat
+  - GEOSITE,discord,💭 Chat
+  - GEOSITE,youtube,🏙️ Stream
+  - GEOSITE,netflix,🏙️ Stream
+  - GEOSITE,bahamut,🏙️ Stream
+  - GEOSITE,bing,🏳️‍⚧️ Proxy
+  - GEOSITE,category-media,🏳️‍⚧️ Proxy
+  - GEOIP,telegram,💭 Chat
+  - GEOIP,youtube,🏙️ Stream
+  - GEOIP,netflix,🏙️ Stream
+  - GEOSITE,onedrive,DIRECT
+  - GEOSITE,steam@cn,DIRECT
+  - GEOSITE,private,DIRECT
+  - GEOIP,private,DIRECT,no-resolve
+  - GEOSITE,kogeki-cn,DIRECT
+  - GEOSITE,cn,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,🏳️‍⚧️ Proxy

@@ -1,0 +1,4 @@
+Requests
+PyQt5
+pyinstaller
+pypiwin32
