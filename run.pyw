@@ -1,9 +1,12 @@
 import sys
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from foo.test.tunmode import proxyswitch
-from foo.test.service import startservice,stopservice
+from foo.test.service import startservice,stopservice,stopserviceonly,startserviceonly
+from foo.test.update import updateyacd,updatecore,replacecore
+from foo.test.yacdopen import yacdopen
 
 StyleSheet = """
 QPushButton {
@@ -21,6 +24,50 @@ QPushButton {
 
 }
 """
+
+# 重写QSystemTrayIcon类，设置托盘图标的属性和事件
+class TrayIcon(QtWidgets.QSystemTrayIcon):
+    def __init__(self,MainWindow,parent=None):
+        super(TrayIcon, self).__init__(parent)
+        self.ui = MainWindow # 传入主窗口对象
+        self.createMenu() # 创建菜单
+
+    def createMenu(self):
+        self.menu = QtWidgets.QMenu() # 创建菜单对象
+        self.showAction = QtWidgets.QAction("显示主界面", self, triggered=self.show_window) # 创建显示主界面的动作
+        self.quitAction = QtWidgets.QAction("退出", self, triggered=self.quit) # 创建退出程序的动作
+        self.menu.addAction(self.showAction) # 添加显示主界面的动作到菜单
+        self.menu.addAction(self.quitAction) # 添加退出程序的动作到菜单
+        self.setContextMenu(self.menu) # 设置托盘图标的右键菜单为self.menu
+        # 设置图标
+        self.setIcon(QtGui.QIcon("img\logo.ico")) # 设置托盘图标为logo.ico
+        self.icon = self.MessageIcon()
+        # 把鼠标点击图标的信号和槽连接
+        self.activated.connect(self.onIconClicked)
+
+    # 点击托盘图标，切换主窗口的显示或隐藏状态
+    def onIconClicked(self, reason):
+        if reason == 2 or reason == 3: # 鼠标左键单击或双击
+            if self.ui.isMinimized() or not self.ui.isVisible():
+                # 如果窗口是最小化或者隐藏状态，则显示窗口并激活它
+                self.ui.showNormal()
+                self.ui.activateWindow()
+            else:
+                # 如果窗口是正常显示状态，则隐藏窗口
+                self.ui.hide()
+
+    # 显示主窗口
+    def show_window(self):
+        if self.ui.isMinimized() or not self.ui.isVisible():
+            # 如果窗口是最小化或者隐藏状态，则显示窗口并激活它
+            self.ui.showNormal()
+            self.ui.activateWindow()
+
+    # 退出程序
+    def quit(self):
+        QtWidgets.qApp.quit()
+
+
 class MyWindow(QWidget):
     def __init__(self,parent=None):
         super(MyWindow,self).__init__(parent)
@@ -44,11 +91,20 @@ class MyWindow(QWidget):
         self.btn4.setText("更新Yacd-Meta")
         self.btn4.clicked.connect(self.msg4)
 
+        self.btn5=QPushButton(self)
+        self.btn5.setText("更新到最新Alpha核心")
+        self.btn5.clicked.connect(self.msg5)
+
+        self.btn6=QPushButton(self)
+        self.btn6.setText("打开Yacd-Meta面板")
+        self.btn6.clicked.connect(self.msg6)
+
         layout.addWidget(self.btn1)
         layout.addWidget(self.btn2)
         layout.addWidget(self.btn3)
         layout.addWidget(self.btn4)
-
+        layout.addWidget(self.btn5)
+        layout.addWidget(self.btn6)
         self.setLayout(layout)
 
 
@@ -58,7 +114,15 @@ class MyWindow(QWidget):
         if status == True:
             QMessageBox.information(self,"提示","服务安装并启动成功，自行检查log文件夹",QMessageBox.Ok)
         elif status == False:
-            QMessageBox.warning(self,"提示","服务启动失败",QMessageBox.Ok)
+            QMessageBox.critical(self,"提示","服务启动失败",QMessageBox.Ok)
+        elif status == "not exist":
+            QMessageBox.warning(self,"提示","\"config.yaml\"不存在",QMessageBox.Ok)
+        elif status == "no permission":
+            QMessageBox.critical(self,"提示","\"config.yaml\"无法写入",QMessageBox.Ok)
+        elif status == "error":
+            QMessageBox.critical(self,"提示","发生了意料之外的错误",QMessageBox.Ok)
+        else:
+            QMessageBox.warning(self,"提示",status,QMessageBox.Ok)
 
     def msg2(self):
         #使用infomation信息框
@@ -77,11 +141,54 @@ class MyWindow(QWidget):
             QMessageBox.information(self,"提示","tun模式已关闭,系统代理已开启",QMessageBox.Ok)
     
     def msg4(self):
-        QMessageBox.information(self,"提示","更新成功",QMessageBox.Ok)
+        status = updateyacd()
+        if status == True:
+            QMessageBox.information(self,"提示","更新成功",QMessageBox.Ok)
+        else:
+            QMessageBox.warning(self,"提示","更新失败",QMessageBox.Ok)
+
+    def msg5(self):
+        status = updatecore()
+        if status == True:
+            status = stopserviceonly()
+            if status == True:
+                status = replacecore()
+                if status == True:
+                    status == startserviceonly()
+                    if status == True:
+                        QMessageBox.information(self,"提示","更新成功",QMessageBox.Ok)
+                    else:
+                        status = stopservice()
+                        QMessageBox.information(self,"提示","更新成功，服务无法启动",QMessageBox.Ok)
+                else:
+                    status = stopservice()
+                    QMessageBox.information(self,"提示","无法替换Clash文件，请自行tmp文件夹替换",QMessageBox.Ok)
+            else:
+                status = stopservice()
+                QMessageBox.information(self,"提示","更新失败，服务无法停止",QMessageBox.Ok)
+        else:
+            status = stopservice()
+            QMessageBox.information(self,"提示","下载失败",QMessageBox.Ok)
+
+    def msg6(self):
+        status = yacdopen()
+        if status == True:
+            return
+        else:
+             QMessageBox.warning(self,"提示","意外错误",QMessageBox.Ok)
+
+    # 重写关闭事件，使得关闭窗口时不是退出程序，而是隐藏窗口
+    def closeEvent(self, event):
+        event.ignore() # 忽略关闭事件
+        self.hide() # 隐藏窗口
+
+
 
 if __name__=="__main__":
     app=QApplication(sys.argv)
     app.setStyleSheet(StyleSheet)
     win=MyWindow()
     win.show()
+    tray = TrayIcon(win) # 创建托盘图标对象，并传入主窗口对象
+    tray.show() # 显示托盘图标
     sys.exit(app.exec_())

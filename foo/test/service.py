@@ -1,47 +1,65 @@
-import os,sys
-import subprocess
-import win32com.shell.shell as shell
+from foo.test.checkconfig import checkexist,checkyaml,externaluimod
+from foo.test.cmd import cmdadmin
 
-
+# 启动服务
 def startservice():
-    command = "cd foo/bin && WinSW.exe install ./Clash-meta.xml && WinSW.exe start ./Clash-meta.xml"
-    output = cmdadmin(command)
-    output1 = output.find("started")
-    output2 = output.find("exists")
-    if output1 > 0 or output2 > 0:
-        return True
+    fileexist = checkexist()
+    # 检查config.yaml 是否存在
+    if fileexist == True:
+        # 修改externel-ui部分
+        yamlmod=externaluimod()
+        if yamlmod==True:
+            yamloutput = checkyaml()
+            # 检查配置文件合法性
+            if yamloutput == True:
+                command = "cd foo/bin && WinSW.exe install ./Clash-meta.xml && WinSW.exe start ./Clash-meta.xml"
+                output = cmdadmin(command)
+                output1 = output.find("started")
+                output2 = output.find("exists")
+                if output1 > 0 or output2 > 0:
+                    return True
+                else:
+                    return False
+            else:
+                return yamloutput
+        else:
+            return "no permission"
+    elif fileexist == False:
+        return "not exist"
     else:
-        return False
-    
+        return "error"
+
+# 停止服务并卸载
 def stopservice():
     command = "cd foo/bin && WinSW.exe stop ./Clash-meta.xml && WinSW.exe uninstall ./Clash-meta.xml"
     output = cmdadmin(command)
     output1 = output.find("stopped")
     output2 = output.find("exist")
-    print(output)
     if output1 > 0 or output2 > 0:
         return True
     else:
         return False
 
-def cmdadmin(command: str):
-    # 获取当前目录的完整路径
-    current_dir = os.path.abspath(".")
+# 仅停止服务
+def stopserviceonly():
+    command = "cd foo/bin && WinSW.exe stop ./Clash-meta.xml"
+    output = cmdadmin(command)
+    output1 = output.find("stopped")
+    if output1 > 0:
+        return True
+    else:
+        return False
 
-    # 请求管理员权限
-    ASADMIN = 'asadmin'
-    if sys.argv[-1] != ASADMIN:
-        script = os.path.abspath(sys.argv[0])
-        params = ' '.join([script] + sys.argv[1:] + [ASADMIN])
-        shell.ShellExecuteEx(lpVerb='runas', lpFile=sys.executable, lpParameters=params)
+# 仅启动服务
+def startserviceonly():
+    command = "cd foo/bin && WinSW.exe start ./Clash-meta.xml"
+    output = cmdadmin(command)
+    output1 = output.find("started")
+    if output1 > 0:
+        return True
+    else:
+        return False
 
-    # 在cmd中运行命令
-    cmd_command = command
-    cmd = subprocess.Popen('cmd.exe', stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    cmd.stdin.write(bytes(f'cd /d "{current_dir}" && {cmd_command}\n', 'utf-8'))
-    cmd.stdin.close()
-    output = cmd.stdout.read().decode(encoding='utf-8',errors='ignore')
-    errors = cmd.stderr.read().decode(encoding='utf-8',errors='ignore')
-    print(output)
-    print(errors)
-    return output
+
+if __name__== "__main__" :
+    startservice()
