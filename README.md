@@ -27,7 +27,7 @@ geoip.dat:
 country.mmdb:
 - https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb
 
-eosite.dat
+geosite.dat
 - https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat
 
 
