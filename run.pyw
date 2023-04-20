@@ -25,6 +25,8 @@ QPushButton {
 }
 """
 
+
+
 # 重写QSystemTrayIcon类，设置托盘图标的属性和事件
 class TrayIcon(QtWidgets.QSystemTrayIcon):
     def __init__(self,MainWindow,parent=None):
@@ -34,6 +36,7 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
 
     def createMenu(self):
         self.menu = QtWidgets.QMenu() # 创建菜单对象
+        self.setToolTip("Clash Meta For Windows Mini")
         self.showAction = QtWidgets.QAction("显示主界面", self, triggered=self.show_window) # 创建显示主界面的动作
         self.quitAction = QtWidgets.QAction("退出", self, triggered=self.quit) # 创建退出程序的动作
         self.menu.addAction(self.showAction) # 添加显示主界面的动作到菜单
@@ -182,13 +185,27 @@ class MyWindow(QWidget):
         event.ignore() # 忽略关闭事件
         self.hide() # 隐藏窗口
 
+# 启动主窗口
+def runWindow():
+    app=QApplication(sys.argv)
+    share = QSharedMemory()
+    share.setKey("main_window")
+    if share.attach():
+        msg_box = QMessageBox()
+        msg_box.setWindowTitle("提示")
+        msg_box.setText("软件已在运行!")
+        msg_box.setIcon(QMessageBox.Information)
+        msg_box.addButton("确定", QMessageBox.YesRole)
+        msg_box.exec()
+        sys.exit(-1)
+    if share.create(1):
+        app.setStyleSheet(StyleSheet)
+        win=MyWindow()
+        win.show()
+        tray = TrayIcon(win) # 创建托盘图标对象，并传入主窗口对象
+        tray.show() # 显示托盘图标
+        sys.exit(app.exec_())
 
 
 if __name__=="__main__":
-    app=QApplication(sys.argv)
-    app.setStyleSheet(StyleSheet)
-    win=MyWindow()
-    win.show()
-    tray = TrayIcon(win) # 创建托盘图标对象，并传入主窗口对象
-    tray.show() # 显示托盘图标
-    sys.exit(app.exec_())
+    runWindow()

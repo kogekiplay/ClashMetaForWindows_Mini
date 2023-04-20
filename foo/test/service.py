@@ -1,5 +1,5 @@
 from foo.test.checkconfig import checkexist,checkyaml,externaluimod
-from foo.test.cmd import cmdadmin
+from foo.test.cmd import cmdnoadmin
 
 # 启动服务
 def startservice():
@@ -13,7 +13,7 @@ def startservice():
             # 检查配置文件合法性
             if yamloutput == True:
                 command = "cd foo/bin && WinSW.exe install ./Clash-meta.xml && WinSW.exe start ./Clash-meta.xml"
-                output = cmdadmin(command)
+                output = cmdnoadmin(command)
                 output1 = output.find("started")
                 output2 = output.find("exists")
                 if output1 > 0 or output2 > 0:
@@ -32,7 +32,7 @@ def startservice():
 # 停止服务并卸载
 def stopservice():
     command = "cd foo/bin && WinSW.exe stop ./Clash-meta.xml && WinSW.exe uninstall ./Clash-meta.xml"
-    output = cmdadmin(command)
+    output = cmdnoadmin(command)
     output1 = output.find("stopped")
     output2 = output.find("exist")
     if output1 > 0 or output2 > 0:
@@ -43,7 +43,7 @@ def stopservice():
 # 仅停止服务
 def stopserviceonly():
     command = "cd foo/bin && WinSW.exe stop ./Clash-meta.xml"
-    output = cmdadmin(command)
+    output = cmdnoadmin(command)
     output1 = output.find("stopped")
     if output1 > 0:
         return True
@@ -53,7 +53,7 @@ def stopserviceonly():
 # 仅启动服务
 def startserviceonly():
     command = "cd foo/bin && WinSW.exe start ./Clash-meta.xml"
-    output = cmdadmin(command)
+    output = cmdnoadmin(command)
     output1 = output.find("started")
     if output1 > 0:
         return True
