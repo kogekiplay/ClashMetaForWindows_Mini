@@ -347,6 +347,6 @@ class Ui_MainWindow(object):
             msgBox.setText("意外错误")
             msgBox.exec()
 
-    def quitApp(self):
+    def quit(self):
         # 退出程序
         QApplication.quit()
