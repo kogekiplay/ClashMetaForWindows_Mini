@@ -52,13 +52,30 @@ def stopserviceonly():
 
 # 仅启动服务
 def startserviceonly():
-    command = "cd foo/bin && WinSW.exe start ./Clash-meta.xml"
-    output = cmdnoadmin(command)
-    output1 = output.find("started")
-    if output1 > 0:
-        return True
+    fileexist = checkexist()
+    # 检查config.yaml 是否存在
+    if fileexist == True:
+        # 修改externel-ui部分
+        yamlmod=externaluimod()
+        if yamlmod==True:
+            yamloutput = checkyaml()
+            # 检查配置文件合法性
+            if yamloutput == True:
+                command = "cd foo/bin && WinSW.exe start ./Clash-meta.xml"
+                output = cmdnoadmin(command)
+                output1 = output.find("started")
+                if output1 > 0:
+                    return True
+                else:
+                    return False
+            else:
+                return yamloutput
+        else:
+            return "no permission"
+    elif fileexist == False:
+        return "not exist"
     else:
-        return False
+        return "error"
 
 
 if __name__== "__main__" :

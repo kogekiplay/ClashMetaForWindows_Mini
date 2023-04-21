@@ -1,5 +1,7 @@
 Requests
-PyQt5
+PyQt6
+pyqt6-tools
 pyinstaller
 pypiwin32
 pyyaml
+global_hotkeys
