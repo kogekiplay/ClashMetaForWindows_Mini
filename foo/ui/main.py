@@ -8,7 +8,7 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 import global_hotkeys as hotkey
-from PySide6.QtCore import (QCoreApplication,QMetaObject,QRect)
+from PySide6.QtCore import (QCoreApplication,QMetaObject,QRect,QTimer,QThread)
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLabel,
     QPushButton, QStatusBar, QVBoxLayout, QWidget,QMessageBox)
@@ -16,13 +16,14 @@ from foo.test.tunmode import proxyswitch
 from foo.test.service import startservice,stopservice,stopserviceonly,startserviceonly
 from foo.test.update import updateyacd,updatecore,replacecore
 from foo.test.yacdopen import yacdopen
+from foo.test.checkapi import checkmemory
 
 class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(354, 373)
+        MainWindow.resize(341, 361)
         MainWindow.setStyleSheet(u"QPushButton{\n"
 "	color:#ffffff; /*\u6587\u5b57\u989c\u8272*/\n"
 "	background-color:qlineargradient(x1: 1, y1: 0, x2: 0, y2: 0, stop:0 #eeaeca, stop: 1 #94bbe9);/*\u80cc\u666f\u8272*/\n"
@@ -136,6 +137,14 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.pushButton_9, 4, 0, 1, 2)
 
         MainWindow.setCentralWidget(self.centralwidget)
+
+        # 创建一个定时器对象
+        self.timer = QTimer()
+        # 连接定时器的信号和更新标签的槽函数
+        self.timer.timeout.connect(self.update_label)
+        # 启动定时器，每隔5秒触发一次
+        self.timer.start(5000)
+
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
@@ -149,7 +158,7 @@ class Ui_MainWindow(object):
         self.pushButton_4.clicked.connect(self.updateyacdmsg)
         self.pushButton_5.clicked.connect(self.updatecoremsg)
         self.pushButton_6.clicked.connect(self.yacdopenmsg)
-        self.pushButton_9.clicked.connect(quit)
+        self.pushButton_9.clicked.connect(self.quit)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -163,6 +172,8 @@ class Ui_MainWindow(object):
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">NaN</span></p></body></html>", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">\u5185\u5b58\u5360\u7528\uff1a</span></p></body></html>", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">NaN</span></p></body></html>", None))
+        #启动的时候检查一次内存，并更新到上面
+        self.update_label()
         self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"Clash Meta 服务安装", None))
         self.pushButton_8.setText(QCoreApplication.translate("MainWindow", u"Clash Meta 服务卸载", None))
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Clash Meta 服务启动", None))
@@ -173,7 +184,13 @@ class Ui_MainWindow(object):
         self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"打开 yacd 面板", None))
         self.pushButton_9.setText(QCoreApplication.translate("MainWindow", u"退出", None))
     # retranslateUi
-    
+
+    def update_label(self):
+        # 调用获取内存信息的函数，返回一个字符串
+        mem_info = checkmemory()
+        # 设置标签的文本为内存信息字符串
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">{}</span></p></body></html>".format(mem_info), None))
+
     def installmsg(self):
         msgBox = QMessageBox()
         msgBox.setWindowTitle("提示")
