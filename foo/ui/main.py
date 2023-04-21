@@ -8,16 +8,10 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 import global_hotkeys as hotkey
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt,Signal,Slot)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform,QAction)
+from PySide6.QtCore import (QCoreApplication,QMetaObject,QRect)
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLabel,
-    QMainWindow, QPushButton, QSizePolicy, QStatusBar,
-    QVBoxLayout, QWidget,QMessageBox,QSystemTrayIcon,QMenu)
+    QPushButton, QStatusBar, QVBoxLayout, QWidget,QMessageBox)
 from foo.test.tunmode import proxyswitch
 from foo.test.service import startservice,stopservice,stopserviceonly,startserviceonly
 from foo.test.update import updateyacd,updatecore,replacecore
