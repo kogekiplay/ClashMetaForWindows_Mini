@@ -19,6 +19,7 @@ class MyMainWindow(QMainWindow):
 def runWindow():
     # 初始化应用和窗口
     app = QApplication(sys.argv)
+    app.setApplicationName("cmfwmini")
     share = QSharedMemory()
     share.setKey("cmfwmini")
     if share.attach():
@@ -34,10 +35,9 @@ def runWindow():
         # 载入界面
         ui = mainui.Ui_MainWindow()
         ui.setupUi(win)
-
         # 创建系统托盘项目
-        MySysTrayWidget(app=app, window=win, ui=ui)
-
+        widget = MySysTrayWidget(app=app, window=win, ui=ui)
+        widget.restore_settings()
         # 显示窗口
         win.show()
 
