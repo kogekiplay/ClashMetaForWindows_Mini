@@ -2,7 +2,7 @@
 
 <img width="258" alt="image" src="https://user-images.githubusercontent.com/46434871/233819691-b798b62d-cbcc-40e7-82fa-af5261cf23a2.png">
 
-**本项目由 BingAI驱动，作者并不会写代码所以不要提需求谢谢**
+**本项目由 [BingAI](https://www.bing.com/?/ai) 驱动，作者并不会写代码所以不要提需求谢谢**
 
 ### 配置说明：
 - 将 `config.yaml.example` 重命名为 `config.yaml `
