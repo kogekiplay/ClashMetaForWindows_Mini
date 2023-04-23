@@ -328,7 +328,7 @@ class Ui_MainWindow(object):
                     status == startserviceonly()
                     if status == True:
                         msgBox.setIcon(QMessageBox.Icon.Information)
-                        msgBox.setText("更新失败")
+                        msgBox.setText("更新成功")
                         msgBox.exec()
                     else:
                         status = stopservice()
