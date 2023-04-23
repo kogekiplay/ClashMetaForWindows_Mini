@@ -16,7 +16,7 @@ from foo.test.tunmode import proxyswitch
 from foo.test.service import startservice,stopservice,stopserviceonly,startserviceonly
 from foo.test.update import updateyacd,updatecore,replacecore
 from foo.test.yacdopen import yacdopen
-from foo.test.checkapi import checkmemory
+from foo.test.checkapi import checkinfo
 
 class Ui_MainWindow(object):
 
@@ -138,12 +138,19 @@ class Ui_MainWindow(object):
 
         MainWindow.setCentralWidget(self.centralwidget)
 
-        # 创建一个定时器对象
+         # 创建一个定时器对象
         self.timer = QTimer()
         # 连接定时器的信号和更新标签的槽函数
-        self.timer.timeout.connect(self.update_label)
+        self.timer.timeout.connect(self.update_status_label)
+        # 启动定时器，每隔30秒触发一次
+        self.timer.start(30000)
+
+        # 创建一个定时器对象
+        self.timer1 = QTimer()
+        # 连接定时器的信号和更新标签的槽函数
+        self.timer1.timeout.connect(self.update_memory_label)
         # 启动定时器，每隔5秒触发一次
-        self.timer.start(5000)
+        self.timer1.start(5000)
 
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -165,15 +172,16 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"CMFW mini 1.5beta", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"CMFW mini 1.5", None))
         MainWindow.setWindowIcon(QIcon("img\logo.ico"))
         self.label.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:14pt;\">Clash Meta For Windows Mini</span></p></body></html>", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">\u8fd0\u884c\u72b6\u6001\uff1a</span></p></body></html>", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">NaN</span></p></body></html>", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">\u5185\u5b58\u5360\u7528\uff1a</span></p></body></html>", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">NaN</span></p></body></html>", None))
-        #启动的时候检查一次内存，并更新到上面
-        self.update_label()
+        #启动的时候检查一次运行状态和内存，并更新到上面
+        self.update_status_label()
+        self.update_memory_label()
         self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"Clash Meta 服务安装", None))
         self.pushButton_8.setText(QCoreApplication.translate("MainWindow", u"Clash Meta 服务卸载", None))
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Clash Meta 服务启动", None))
@@ -185,9 +193,15 @@ class Ui_MainWindow(object):
         self.pushButton_9.setText(QCoreApplication.translate("MainWindow", u"退出", None))
     # retranslateUi
 
-    def update_label(self):
+    def update_status_label(self):
+        # 调用获取状态信息的函数，返回一个字符串
+        sta_info = checkinfo("status")
+        # 设置标签的文本为内存信息字符串
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">{}</span></p></body></html>".format(sta_info), None))
+
+    def update_memory_label(self):
         # 调用获取内存信息的函数，返回一个字符串
-        mem_info = checkmemory()
+        mem_info = checkinfo("memory")
         # 设置标签的文本为内存信息字符串
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">{}</span></p></body></html>".format(mem_info), None))
 

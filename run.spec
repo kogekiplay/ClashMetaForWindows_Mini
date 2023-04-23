@@ -17,7 +17,7 @@ a = Analysis(
            ('foo\\bin\\WinSW.exe','foo\\bin'),
            ('config.yaml.example','.'),
            ('img\\logo.ico','img'),
-           ('config\\config.ini','config'),],
+           ('config','config'),],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

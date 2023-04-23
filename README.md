@@ -1,13 +1,6 @@
 ### Demo:
 
-<img width="258" alt="image" src="https://user-images.githubusercontent.com/46434871/233681690-b0cbdab0-f5cc-4adc-afe2-c0a7c3db9898.png">
-
-### 1.4变化：
-
-- 使用PySide6重写UI
-- 支持核心内存显示
-- 使用nuitka转为c源码构建，更快的运行速度，更低的内存占用
-- Geosite和Geoip请手动下载，内置foo/bin/resources为自用lite版本
+<img width="258" alt="image" src="https://user-images.githubusercontent.com/46434871/233819691-b798b62d-cbcc-40e7-82fa-af5261cf23a2.png">
 
 ### 配置说明：
 - 将 `config.yaml.example` 重命名为 `config.yaml `

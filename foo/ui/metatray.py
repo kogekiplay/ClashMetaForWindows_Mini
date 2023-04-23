@@ -2,11 +2,16 @@
 # 定义全局快捷键
 import global_hotkeys as hotkey
 
+import os
+
 # 实现系统托盘程序
 from PySide6.QtWidgets import QSystemTrayIcon, QMenu, QWidget
 from PySide6.QtGui import QIcon, QAction
 from PySide6.QtCore import Signal, Slot, QSettings
 import img.app_icon_rc as app_rc # 由pyside6-rcc生成的资源文件
+
+#引入开机启动
+from foo.test.autostart import getexepath,add_to_startup,remove_from_startup
 
 class MySysTrayWidget(QWidget):
     # 自定义个信号
@@ -85,12 +90,13 @@ class MySysTrayWidget(QWidget):
     def on_setting_changed(self):
         # 获取设置菜单项的选中状态
         checked = self.startup_action.isChecked()
+        exe_path=getexepath()
         # 根据选中状态显示不同的提示信息,并调用注册表函数
         if checked:
-            # autostartup(false)
+            add_to_startup(exe_path)
             self.__trayicon.showMessage(self.tr("提示"), self.tr("已开启开机自启动"))
         else:
-            # autostartup(true)
+            remove_from_startup(exe_path)
             self.__trayicon.showMessage(self.tr("提示"), self.tr("已关闭开机自启动"))
         # 保存设置到QSettings对象中，指定ini格式和自定义文件名
         settings = QSettings("config/config.ini", QSettings.IniFormat)
@@ -101,7 +107,13 @@ class MySysTrayWidget(QWidget):
         # 创建一个QSettings对象，并获取保存的设置值，指定ini格式和自定义文件名
         settings = QSettings("config/config.ini", QSettings.IniFormat)
         checked = settings.value("startup", False, type=bool)
+        exe_path=getexepath()
+        # 根据config恢复开机自启动注册表状态
+        if checked == True:
+            add_to_startup(exe_path)
         # 设置开机自启动菜单项的选中状态
+        elif checked == False:
+            remove_from_startup(exe_path)
         self.startup_action.setChecked(checked)
 
     def quit(self):
@@ -120,7 +132,7 @@ class MySysTrayWidget(QWidget):
 
     @Slot(bool)
     def onHotkey(self, visible):
-        print('here', visible)
+        # print('here', visible)
         if visible:
             self.hideUserInterface()
         else:
