@@ -5,3 +5,4 @@ pypiwin32
 pyyaml
 global_hotkeys
 psutil
+winshell

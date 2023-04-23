@@ -23,6 +23,10 @@ def add_to_startup(exe_path):
     if not os.path.exists(os.path.join(startup_folder, shortcut_name)):
         # create a shortcut object
         shortcut = winshell.shortcut(exe_path)
+        # get the exe folder
+        exe_folder = os.path.dirname(exe_path)
+        # set the working directory
+        shortcut.working_directory = exe_folder
         # save the shortcut to the startup folder
         shortcut.write(os.path.join(startup_folder, shortcut_name))
 
