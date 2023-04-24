@@ -1,6 +1,6 @@
 ### Demo:
 
-<img width="258" alt="image" src="https://user-images.githubusercontent.com/46434871/233819691-b798b62d-cbcc-40e7-82fa-af5261cf23a2.png">
+<img width="258" alt="image" src="https://user-images.githubusercontent.com/46434871/233952742-3c82c48a-3ec0-4cfd-9182-ae597f8ac430.png">
 
 **本项目由 [BingAI](https://www.bing.com/?/ai) 驱动，作者并不会写代码所以不要提需求谢谢**
 
