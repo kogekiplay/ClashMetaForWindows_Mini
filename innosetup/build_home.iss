@@ -40,6 +40,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "F:\ClashMetaForWindows_Mini\dist\run\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "F:\ClashMetaForWindows_Mini\dist\run\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "*"; Excludes: "*.ini"; Flags: recursesubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
