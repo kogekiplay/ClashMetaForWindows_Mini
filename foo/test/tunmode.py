@@ -77,13 +77,12 @@ def getclashpath():
 # Clash.exe 放行windows防火墙
 def controlfirmware():
     clash_path=getclashpath()
-    print(clash_path)
     rule_name = "Clash Meta For Windows Mini"
     output = os.popen(f"netsh advfirewall firewall show rule name=\"{rule_name}\"").read()
     if "No rules match the specified criteria." in output:
         addrule(clash_path)
     else:
-        print(f"Rule {rule_name} already exists，将重新添加")
+        # print(f"Rule {rule_name} already exists，将重新添加")
         os.system(f"netsh advfirewall firewall delete rule name=\"Clash Meta For Windows Mini\"")
         addrule(clash_path)
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'main.ui'
+## Form generated from reading UI file 'mainui.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.0
 ##
@@ -23,7 +23,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(341, 361)
+        MainWindow.resize(341, 416)
         MainWindow.setStyleSheet(u"QPushButton{\n"
 "	color:#ffffff; /*\u6587\u5b57\u989c\u8272*/\n"
 "	background-color:qlineargradient(x1: 1, y1: 0, x2: 0, y2: 0, stop:0 #eeaeca, stop: 1 #94bbe9);/*\u80cc\u666f\u8272*/\n"
@@ -81,60 +81,75 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_3)
 
-        self.layoutWidget1 = QWidget(self.centralwidget)
-        self.layoutWidget1.setObjectName(u"layoutWidget1")
-        self.layoutWidget1.setGeometry(QRect(10, 131, 320, 211))
-        self.gridLayout = QGridLayout(self.layoutWidget1)
+        self.widget = QWidget(self.centralwidget)
+        self.widget.setObjectName(u"widget")
+        self.widget.setGeometry(QRect(10, 132, 322, 256))
+        self.verticalLayout_2 = QVBoxLayout(self.widget)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.pushButton_7 = QPushButton(self.layoutWidget1)
+        self.pushButton_7 = QPushButton(self.widget)
         self.pushButton_7.setObjectName(u"pushButton_7")
         self.pushButton_7.setStyleSheet(u"")
 
         self.gridLayout.addWidget(self.pushButton_7, 0, 0, 1, 1)
 
-        self.pushButton_8 = QPushButton(self.layoutWidget1)
+        self.pushButton_8 = QPushButton(self.widget)
         self.pushButton_8.setObjectName(u"pushButton_8")
         self.pushButton_8.setStyleSheet(u"")
 
         self.gridLayout.addWidget(self.pushButton_8, 0, 1, 1, 1)
 
-        self.pushButton = QPushButton(self.layoutWidget1)
+        self.pushButton = QPushButton(self.widget)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setStyleSheet(u"")
 
         self.gridLayout.addWidget(self.pushButton, 1, 0, 1, 1)
 
-        self.pushButton_2 = QPushButton(self.layoutWidget1)
+        self.pushButton_2 = QPushButton(self.widget)
         self.pushButton_2.setObjectName(u"pushButton_2")
 
         self.gridLayout.addWidget(self.pushButton_2, 1, 1, 1, 1)
 
-        self.pushButton_3 = QPushButton(self.layoutWidget1)
+        self.pushButton_3 = QPushButton(self.widget)
         self.pushButton_3.setObjectName(u"pushButton_3")
 
         self.gridLayout.addWidget(self.pushButton_3, 2, 0, 1, 1)
 
-        self.pushButton_5 = QPushButton(self.layoutWidget1)
+        self.pushButton_5 = QPushButton(self.widget)
         self.pushButton_5.setObjectName(u"pushButton_5")
 
         self.gridLayout.addWidget(self.pushButton_5, 2, 1, 1, 1)
 
-        self.pushButton_4 = QPushButton(self.layoutWidget1)
+        self.pushButton_4 = QPushButton(self.widget)
         self.pushButton_4.setObjectName(u"pushButton_4")
 
         self.gridLayout.addWidget(self.pushButton_4, 3, 0, 1, 1)
 
-        self.pushButton_6 = QPushButton(self.layoutWidget1)
+        self.pushButton_6 = QPushButton(self.widget)
         self.pushButton_6.setObjectName(u"pushButton_6")
 
         self.gridLayout.addWidget(self.pushButton_6, 3, 1, 1, 1)
 
-        self.pushButton_9 = QPushButton(self.layoutWidget1)
+        self.pushButton_10 = QPushButton(self.widget)
+        self.pushButton_10.setObjectName(u"pushButton_10")
+
+        self.gridLayout.addWidget(self.pushButton_10, 4, 0, 1, 1)
+
+        self.pushButton_11 = QPushButton(self.widget)
+        self.pushButton_11.setObjectName(u"pushButton_11")
+
+        self.gridLayout.addWidget(self.pushButton_11, 4, 1, 1, 1)
+
+
+        self.verticalLayout_2.addLayout(self.gridLayout)
+
+        self.pushButton_9 = QPushButton(self.widget)
         self.pushButton_9.setObjectName(u"pushButton_9")
         self.pushButton_9.setStyleSheet(u"")
 
-        self.gridLayout.addWidget(self.pushButton_9, 4, 0, 1, 2)
+        self.verticalLayout_2.addWidget(self.pushButton_9)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QStatusBar(MainWindow)
@@ -148,7 +163,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"CMFW mini 1.4", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"CMFW mini 1.6", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:14pt;\">Clash Meta For Windows Mini</span></p></body></html>", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">\u8fd0\u884c\u72b6\u6001\uff1a</span></p></body></html>", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">NaN</span></p></body></html>", None))
@@ -162,6 +177,8 @@ class Ui_MainWindow(object):
         self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"\u66f4\u65b0 Alpha \u5185\u6838", None))
         self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"\u66f4\u65b0yacd-meta", None))
         self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"\u6253\u5f00 Yacd \u9762\u677f", None))
+        self.pushButton_10.setText(QCoreApplication.translate("MainWindow", u"\u4e0b\u8f7d\u914d\u7f6e\u6587\u4ef6", None))
+        self.pushButton_11.setText(QCoreApplication.translate("MainWindow", u"\u66f4\u65b0\u914d\u7f6e\u6587\u4ef6", None))
         self.pushButton_9.setText(QCoreApplication.translate("MainWindow", u"\u9000\u51fa", None))
     # retranslateUi
 

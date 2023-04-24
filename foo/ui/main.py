@@ -8,22 +8,29 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 import global_hotkeys as hotkey
-from PySide6.QtCore import (QCoreApplication,QMetaObject,QRect,QTimer,QThread)
+from PySide6.QtCore import (QCoreApplication,QMetaObject,QRect,QTimer,QSettings)
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLabel,
     QPushButton, QStatusBar, QVBoxLayout, QWidget,QMessageBox)
+from foo.ui.textline_ui import Ui_Form
 from foo.test.tunmode import proxyswitch
 from foo.test.service import startservice,stopservice,stopserviceonly,startserviceonly
 from foo.test.update import updateyacd,updatecore,replacecore
 from foo.test.yacdopen import yacdopen
 from foo.test.checkapi import checkinfo
+from foo.test.downconfig import downlaodconfig
+
+class TextlineWidget (QWidget, Ui_Form):
+  def __init__ (self):
+    super ().__init__ ()
+    self.setupUi (self)
 
 class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(341, 361)
+        MainWindow.resize(341, 416)
         MainWindow.setStyleSheet(u"QPushButton{\n"
 "	color:#ffffff; /*\u6587\u5b57\u989c\u8272*/\n"
 "	background-color:qlineargradient(x1: 1, y1: 0, x2: 0, y2: 0, stop:0 #eeaeca, stop: 1 #94bbe9);/*\u80cc\u666f\u8272*/\n"
@@ -45,20 +52,20 @@ class Ui_MainWindow(object):
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(40, 10, 271, 41))
         self.label.setStyleSheet(u"")
-        self.widget = QWidget(self.centralwidget)
-        self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(20, 50, 311, 71))
-        self.verticalLayout = QVBoxLayout(self.widget)
+        self.layoutWidget = QWidget(self.centralwidget)
+        self.layoutWidget.setObjectName(u"layoutWidget")
+        self.layoutWidget.setGeometry(QRect(20, 50, 311, 71))
+        self.verticalLayout = QVBoxLayout(self.layoutWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.label_2 = QLabel(self.widget)
+        self.label_2 = QLabel(self.layoutWidget)
         self.label_2.setObjectName(u"label_2")
 
         self.horizontalLayout_2.addWidget(self.label_2)
 
-        self.label_3 = QLabel(self.widget)
+        self.label_3 = QLabel(self.layoutWidget)
         self.label_3.setObjectName(u"label_3")
 
         self.horizontalLayout_2.addWidget(self.label_3)
@@ -68,12 +75,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.label_4 = QLabel(self.widget)
+        self.label_4 = QLabel(self.layoutWidget)
         self.label_4.setObjectName(u"label_4")
 
         self.horizontalLayout_3.addWidget(self.label_4)
 
-        self.label_5 = QLabel(self.widget)
+        self.label_5 = QLabel(self.layoutWidget)
         self.label_5.setObjectName(u"label_5")
 
         self.horizontalLayout_3.addWidget(self.label_5)
@@ -81,60 +88,75 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_3)
 
-        self.widget1 = QWidget(self.centralwidget)
-        self.widget1.setObjectName(u"widget1")
-        self.widget1.setGeometry(QRect(10, 131, 320, 211))
-        self.gridLayout = QGridLayout(self.widget1)
+        self.widget = QWidget(self.centralwidget)
+        self.widget.setObjectName(u"widget")
+        self.widget.setGeometry(QRect(10, 132, 322, 256))
+        self.verticalLayout_2 = QVBoxLayout(self.widget)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.pushButton_7 = QPushButton(self.widget1)
+        self.pushButton_7 = QPushButton(self.widget)
         self.pushButton_7.setObjectName(u"pushButton_7")
         self.pushButton_7.setStyleSheet(u"")
 
         self.gridLayout.addWidget(self.pushButton_7, 0, 0, 1, 1)
 
-        self.pushButton_8 = QPushButton(self.widget1)
+        self.pushButton_8 = QPushButton(self.widget)
         self.pushButton_8.setObjectName(u"pushButton_8")
         self.pushButton_8.setStyleSheet(u"")
 
         self.gridLayout.addWidget(self.pushButton_8, 0, 1, 1, 1)
 
-        self.pushButton = QPushButton(self.widget1)
+        self.pushButton = QPushButton(self.widget)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setStyleSheet(u"")
 
         self.gridLayout.addWidget(self.pushButton, 1, 0, 1, 1)
 
-        self.pushButton_2 = QPushButton(self.widget1)
+        self.pushButton_2 = QPushButton(self.widget)
         self.pushButton_2.setObjectName(u"pushButton_2")
 
         self.gridLayout.addWidget(self.pushButton_2, 1, 1, 1, 1)
 
-        self.pushButton_3 = QPushButton(self.widget1)
+        self.pushButton_3 = QPushButton(self.widget)
         self.pushButton_3.setObjectName(u"pushButton_3")
 
         self.gridLayout.addWidget(self.pushButton_3, 2, 0, 1, 1)
 
-        self.pushButton_5 = QPushButton(self.widget1)
+        self.pushButton_5 = QPushButton(self.widget)
         self.pushButton_5.setObjectName(u"pushButton_5")
 
         self.gridLayout.addWidget(self.pushButton_5, 2, 1, 1, 1)
 
-        self.pushButton_4 = QPushButton(self.widget1)
+        self.pushButton_4 = QPushButton(self.widget)
         self.pushButton_4.setObjectName(u"pushButton_4")
 
         self.gridLayout.addWidget(self.pushButton_4, 3, 0, 1, 1)
 
-        self.pushButton_6 = QPushButton(self.widget1)
+        self.pushButton_6 = QPushButton(self.widget)
         self.pushButton_6.setObjectName(u"pushButton_6")
 
         self.gridLayout.addWidget(self.pushButton_6, 3, 1, 1, 1)
 
-        self.pushButton_9 = QPushButton(self.widget1)
+        self.pushButton_10 = QPushButton(self.widget)
+        self.pushButton_10.setObjectName(u"pushButton_10")
+
+        self.gridLayout.addWidget(self.pushButton_10, 4, 0, 1, 1)
+
+        self.pushButton_11 = QPushButton(self.widget)
+        self.pushButton_11.setObjectName(u"pushButton_11")
+
+        self.gridLayout.addWidget(self.pushButton_11, 4, 1, 1, 1)
+
+
+        self.verticalLayout_2.addLayout(self.gridLayout)
+
+        self.pushButton_9 = QPushButton(self.widget)
         self.pushButton_9.setObjectName(u"pushButton_9")
         self.pushButton_9.setStyleSheet(u"")
 
-        self.gridLayout.addWidget(self.pushButton_9, 4, 0, 1, 2)
+        self.verticalLayout_2.addWidget(self.pushButton_9)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -162,9 +184,11 @@ class Ui_MainWindow(object):
         self.pushButton.clicked.connect(self.startservicemsg)
         self.pushButton_2.clicked.connect(self.stopservicemsg)
         self.pushButton_3.clicked.connect(self.proxyswitchmsg)
-        self.pushButton_4.clicked.connect(self.updateyacdmsg)
         self.pushButton_5.clicked.connect(self.updatecoremsg)
+        self.pushButton_4.clicked.connect(self.updateyacdmsg)
         self.pushButton_6.clicked.connect(self.yacdopenmsg)
+        self.pushButton_10.clicked.connect(self.open_text_widget)
+        self.pushButton_11.clicked.connect(self.configupdatemsg)
         self.pushButton_9.clicked.connect(self.quit)
 
 
@@ -190,6 +214,8 @@ class Ui_MainWindow(object):
         self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"更新 alpha 内核", None))
         self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"更新 Yacd-Meta", None))
         self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"打开 yacd 面板", None))
+        self.pushButton_10.setText(QCoreApplication.translate("MainWindow", u"下载配置文件", None))
+        self.pushButton_11.setText(QCoreApplication.translate("MainWindow", u"更新配置文件", None))
         self.pushButton_9.setText(QCoreApplication.translate("MainWindow", u"退出", None))
     # retranslateUi
 
@@ -376,6 +402,32 @@ class Ui_MainWindow(object):
         else:
             msgBox.setIcon(QMessageBox.Icon.Warning)
             msgBox.setText("意外错误")
+            msgBox.exec()
+
+    def open_text_widget (self):
+        self.sw = TextlineWidget ()
+        self.sw.show ()
+
+    def configupdatemsg(self):
+        msgBox = QMessageBox()
+        msgBox.setWindowTitle("提示")
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        msgBox.setWindowIcon(QIcon("img\logo.ico"))
+        settings = QSettings("config/config.ini", QSettings.IniFormat) # 创建QSettings对象
+        if settings.contains("url"): # 判断url键是否存在
+            proxylink = settings.value("url") # 读取url并转换为字符串
+            status=downlaodconfig(proxylink)
+            if status == True:
+                msgBox.setIcon(QMessageBox.Icon.Information)
+                msgBox.setText("下载成功")
+                msgBox.exec()
+            else:
+                msgBox.setIcon(QMessageBox.Icon.Information)
+                msgBox.setText("不是合法链接")
+                msgBox.exec()
+        else:
+            msgBox.setIcon(QMessageBox.Icon.Warning)
+            msgBox.setText("订阅链接不存在，请先下载配置")
             msgBox.exec()
 
     def quit(self):
