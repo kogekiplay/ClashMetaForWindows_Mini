@@ -24,5 +24,5 @@ def cmdnoadmin(command: str):
     output = cmd.stdout.read().decode(encoding='utf-8',errors='ignore')
     return output
 
-if __name__== "__main__" :
-    cmdnoadmin("cd foo/bin && clash.exe -d ./resources/ -f ../../config.yaml -t")
+#if __name__== "__main__" :
+#    cmdnoadmin("cd foo/bin && clash.exe -d ./resources/ -f ../../config.yaml -t")

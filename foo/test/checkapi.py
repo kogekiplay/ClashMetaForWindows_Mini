@@ -27,5 +27,5 @@ def checkinfo(info:str):
     except:
         return "NaN"
     
-if __name__== "__main__" :
-    checkinfo("memory")
+#if __name__== "__main__" :
+#    checkinfo("memory")

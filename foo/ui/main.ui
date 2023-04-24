@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>CMFW mini 1.5</string>
+   <string>CMFW mini 1.6</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QPushButton{

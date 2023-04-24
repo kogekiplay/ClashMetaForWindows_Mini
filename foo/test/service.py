@@ -78,5 +78,5 @@ def startserviceonly():
         return "error"
 
 
-if __name__== "__main__" :
-    startservice()
+#if __name__== "__main__" :
+#    startservice()
