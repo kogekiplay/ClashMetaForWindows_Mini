@@ -37,6 +37,9 @@ Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.i
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
+[Dirs]
+Name: {app}; Permissions: users-full
+
 [Files]
 Source: "C:\Users\kogeki\Documents\python-clash\dist\run\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\kogeki\Documents\python-clash\dist\run\*";Excludes:C:\Users\kogeki\Documents\python-clash\dist\run\foo\bin; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs

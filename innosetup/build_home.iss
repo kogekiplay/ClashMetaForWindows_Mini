@@ -23,7 +23,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 PrivilegesRequired=admin
-PrivilegesRequiredOverridesAllowed=dialog
+;PrivilegesRequiredOverridesAllowed=dialog
 OutputDir=F:\Downloads
 OutputBaseFilename=CMFW_setup
 SetupIconFile=F:\ClashMetaForWindows_Mini\img\logo.ico
@@ -37,10 +37,13 @@ Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.i
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
+[Dirs]
+Name: {app}; Permissions: users-full
+
 [Files]
 Source: "F:\ClashMetaForWindows_Mini\dist\run\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "F:\ClashMetaForWindows_Mini\dist\run\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "*"; Excludes: "*.ini"; Flags: recursesubdirs
+Source: "F:\ClashMetaForWindows_Mini\dist\run\*"; Excludes:F:\ClashMetaForWindows_Mini\dist\run\foo\bin; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "F:\ClashMetaForWindows_Mini\dist\run\foo\bin\*"; DestDir: "{app}\foo\bin"; Flags: onlyifdoesntexist
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
