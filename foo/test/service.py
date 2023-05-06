@@ -1,4 +1,4 @@
-from foo.test.checkconfig import checkexist,checkyaml,externaluimod
+from foo.test.checkconfig import checkexist,checkyaml,yaml_mod
 from foo.test.cmd import cmdnoadmin
 
 # 启动服务
@@ -7,7 +7,7 @@ def startservice():
     # 检查config.yaml 是否存在
     if fileexist == True:
         # 修改externel-ui部分
-        yamlmod=externaluimod()
+        yamlmod=yaml_mod()
         if yamlmod==True:
             yamloutput = checkyaml()
             # 检查配置文件合法性
@@ -56,7 +56,7 @@ def startserviceonly():
     # 检查config.yaml 是否存在
     if fileexist == True:
         # 修改externel-ui部分
-        yamlmod=externaluimod()
+        yamlmod=yaml_mod()
         if yamlmod==True:
             yamloutput = checkyaml()
             # 检查配置文件合法性

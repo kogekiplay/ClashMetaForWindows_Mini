@@ -4,7 +4,7 @@ import json
 import winreg
 import ctypes
 import os,sys
-from foo.test.checkconfig import getproxyport,getuiport
+from foo.test.checkconfig import getproxyport,getuiport,tun_yaml_mod
 
 # 如果从来没有开过代理 有可能健不存在 会报错
 INTERNET_SETTINGS = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
@@ -55,6 +55,7 @@ def proxyswitch():
         result = response.status_code
         if result == 204:
             stop()
+            tun_yaml_mod("open")
             return True
     elif tunstatus == True:
         paramdata = json.dumps({
@@ -66,6 +67,7 @@ def proxyswitch():
         result = response.status_code
         if result == 204:
             start()
+            tun_yaml_mod("close")
             return False
 
 

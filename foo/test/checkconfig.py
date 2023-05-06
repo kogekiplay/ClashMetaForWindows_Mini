@@ -24,13 +24,34 @@ def checkyaml():
         output = '\n'.join(last_lines)
         return output
 
-# 替换externel-ui目录
-def externaluimod():
+# 替换externel-ui目录,添加tun模式配置
+def yaml_mod():
     yaml_data=loadyaml()
     #print(yaml_data)
     yaml_data.setdefault('external-ui','../dashboard')
+    tun_data={'auto-detect-interface': True, 'auto-route': True, 'dns-hijack': ['0.0.0.0:53'], 'enable': True, 'stack': 'system'}
+    yaml_data.setdefault('tun',tun_data)
     yaml_data.setdefault('external-controller','0.0.0.0:9090')
     yaml_data['external-ui']='../dashboard'
+    try:
+        with open(file, "w",encoding='utf-8') as f:
+            yaml.dump(yaml_data, f,default_flow_style=False,encoding='utf-8',allow_unicode=True)
+        return True
+    except:
+        return False
+
+# tun模式切换覆写配置
+def tun_yaml_mod(status:str):
+    yaml_data=loadyaml()
+    #print(yaml_data)
+    if status=="open":
+        tun_open_data={'auto-detect-interface': True, 'auto-route': True, 'dns-hijack': ['0.0.0.0:53'], 'enable': True, 'stack': 'system'}
+        yaml_data['tun']=tun_open_data
+    elif status=="close":
+        tun_close_data={'auto-detect-interface': True, 'auto-route': True, 'dns-hijack': ['0.0.0.0:53'], 'enable': False, 'stack': 'system'}
+        yaml_data['tun']=tun_close_data
+    else:
+        return
     try:
         with open(file, "w",encoding='utf-8') as f:
             yaml.dump(yaml_data, f,default_flow_style=False,encoding='utf-8',allow_unicode=True)
@@ -55,3 +76,6 @@ def loadyaml():
     with open(file,'rb') as f:
         data = yaml.safe_load(f)
     return data
+
+#if __name__== "__main__" :
+#    tun_yaml_mod("close")
