@@ -43,7 +43,7 @@ Name: {app}; Permissions: users-full
 [Files]
 Source: "F:\ClashMetaForWindows_Mini\dist\run\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "F:\ClashMetaForWindows_Mini\dist\run\*"; Excludes:"\foo\bin\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "F:\ClashMetaForWindows_Mini\dist\run\foo\bin\*"; DestDir: "{app}\foo\bin"; Flags: onlyifdoesntexist
+Source: "F:\ClashMetaForWindows_Mini\dist\run\foo\bin\*"; DestDir: "{app}\foo\bin"; Flags: onlyifdoesntexist recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
