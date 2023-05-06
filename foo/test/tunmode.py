@@ -3,7 +3,7 @@ import requests
 import json
 import winreg
 import ctypes
-import os,sys
+import os,sys,subprocess
 from foo.test.checkconfig import getproxyport,getuiport,tun_yaml_mod
 
 # 如果从来没有开过代理 有可能健不存在 会报错
@@ -80,18 +80,18 @@ def getclashpath():
 def controlfirmware():
     clash_path=getclashpath()
     rule_name = "Clash Meta For Windows Mini"
-    output = os.popen(f"netsh advfirewall firewall show rule name=\"{rule_name}\"").read()
-    if "No rules match the specified criteria." in output:
+    output = subprocess.check_output(["netsh", "advfirewall", "firewall", "show", "rule", "name="f"{rule_name}"""])
+    if b"No rules match the specified criteria." in output:
         addrule(clash_path)
     else:
         # print(f"Rule {rule_name} already exists，将重新添加")
-        os.system(f"netsh advfirewall firewall delete rule name=\"Clash Meta For Windows Mini\"")
+        subprocess.call(["netsh", "advfirewall", "firewall", "delete", "rule", "name=""Clash Meta For Windows Mini"""],stdout=subprocess.DEVNULL)
         addrule(clash_path)
 
 def addrule(clash_path:str):
     if is_admin():
-        os.system(f"netsh advfirewall firewall add rule name=\"Clash Meta For Windows Mini\" dir=in action=allow program=\"{clash_path}\" enable=yes description=\"1\"")
-        #os.system(f"netsh advfirewall firewall delete rule name=\"Clash\"")
+        subprocess.call(["netsh", "advfirewall", "firewall", "add", "rule", "name=""Clash Meta For Windows Mini""", "dir=in", "action=allow", f"program="f"{clash_path}""", "enable=yes", "description=""1"""],stdout=subprocess.DEVNULL)
+        #subprocess.run(["netsh", "advfirewall", "firewall", "delete", "rule", "name=\"Clash\""])
     else:
         # Re-run the program with admin rights
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
@@ -103,4 +103,4 @@ def is_admin():
         return False
 
 #if __name__== "__main__" :
-#    controlfirmware()
+#    addrule(getclashpath())
