@@ -1,8 +1,9 @@
 import requests
 import re
+import subprocess
 from foo.test.checkconfig import is_valid_yaml
 
-def downlaod_config(url):
+def download_config(url):
     # 定义一个正则表达式，匹配http或https开头的url
     regex = re.compile(
         r'^(?:http|ftp)s?://'  # http:// or https://
@@ -24,11 +25,15 @@ def downlaod_config(url):
                 f.write(yaml_content)
                 f.flush()
             else:
-                print("status:",status)
                 return status
+        # 打开文件使用系统默认程序
+        try:
+            subprocess.Popen(["start", file_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        except Exception as e:
+            print("Error opening file:", e)
         return True
     else:
         return False
 
 #if __name__== "__main__" :
-#    downlaod_config()
+#    download_config()

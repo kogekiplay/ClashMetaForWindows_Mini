@@ -17,7 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialogButtonBox, QLabel,
     QLineEdit, QSizePolicy, QWidget,QMessageBox)
-from foo.test.downconfig import downlaod_config
+from foo.test.downconfig import download_config
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -55,11 +55,11 @@ class Ui_Form(object):
     def on_ok_clicked(self):
         proxylink = self.lineEdit.text()
         if proxylink: # 如果proxylink不是空字符串
-            status=downlaod_config(proxylink)
+            status=download_config(proxylink)
             if isinstance(status, str):
                 QMessageBox.warning(self, "警告", status) # 弹出警告消息框
             elif status == True:
-                QMessageBox.information(self, "提示", "下载成功") # 弹出警告消息框
+                QMessageBox.information(self, "提示", "下载成功!\n已尝试使用默认程序打开 config.yaml\n请确认配置文件是否正确！") # 弹出警告消息框
                 # 创建一个QSettings对象，并获取保存的设置值，指定ini格式和自定义文件名
                 settings = QSettings("config/config.ini", QSettings.IniFormat)
                 settings.setValue("url", proxylink)
