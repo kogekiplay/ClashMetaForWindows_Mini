@@ -1,9 +1,10 @@
 import sys
 from PySide6 import QtWidgets
 from PySide6.QtCore import QSharedMemory
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget,QMessageBox
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QMessageBox
 import foo.ui.main as mainui
 from foo.ui.metatray import MySysTrayWidget
+
 
 class MyMainWindow(QMainWindow):
     # 继承一个QMainWindow，点右上角不会退出
@@ -16,6 +17,8 @@ class MyMainWindow(QMainWindow):
         self.hide()
 
 # 进程锁
+
+
 def runWindow():
     # 初始化应用和窗口
     app = QApplication(sys.argv)
@@ -44,6 +47,6 @@ def runWindow():
         # 运行应用
         sys.exit(app.exec())
 
+
 if __name__ == "__main__":
     runWindow()
-    

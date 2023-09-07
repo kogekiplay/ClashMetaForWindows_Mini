@@ -18,12 +18,12 @@ tproxy-port: 7891
 unified-delay: false
 geodata-mode: true
 tcp-concurrent: false
-find-process-mode: off
+find-process-mode: "strict"
 global-client-fingerprint: chrome
 geox-url:
-  mmdb: "https://ghproxy.wushidi.gay/https://github.com/kogekiplay/geoip/releases/download/latest/Country.mmdb"
-  geoip: "https://ghproxy.wushidi.gay/https://github.com/kogekiplay/clash-rules-dat/releases/download/latest/geoip.dat"
-  geosite: "https://ghproxy.wushidi.gay/https://github.com/kogekiplay/clash-rules-dat/releases/download/latest/geosite.dat"
+  mmdb: "https://gh-proxy.kogeki.cf/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb"
+  geoip: "https://gh-proxy.wushidi.gay/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
+  geosite: "https://gh-proxy.wushidi.gay/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
 
 # Meta 域名嗅探
 sniffer:

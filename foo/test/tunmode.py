@@ -1,41 +1,56 @@
 import urllib
 import requests
 import json
-import winreg
+from sys import argv
+from winreg import OpenKey, QueryValueEx, SetValueEx
+from winreg import HKEY_CURRENT_USER, KEY_ALL_ACCESS
 import ctypes
 import os,sys,subprocess
 from foo.test.checkconfig import getproxyport,getuiport,tun_yaml_mod
 
-# 如果从来没有开过代理 有可能健不存在 会报错
-INTERNET_SETTINGS = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
-                                   r'Software\Microsoft\Windows\CurrentVersion\Internet Settings',
-                                   0, winreg.KEY_ALL_ACCESS)
-# 设置刷新
-INTERNET_OPTION_REFRESH = 37
-INTERNET_OPTION_SETTINGS_CHANGED = 39
-internet_set_option = ctypes.windll.Wininet.InternetSetOptionW
+proxyport=getproxyport()
+PROXIES = {
+    'default': {
+        'enable': 1,
+        'override': f'127.0.0.1;localhost;<local>',
+        'server': f'127.0.0.1:{proxyport}'
+    },
+    'off': {
+        'enable': 0,
+        'override': f'-',
+        'server': f'-'
+    },
+}
+
+INTERNET_SETTINGS = OpenKey(HKEY_CURRENT_USER, 
+    r'Software\Microsoft\Windows\CurrentVersion\Internet Settings',
+    0, KEY_ALL_ACCESS)
 
 def set_key(name, value):
-    # 修改键值
-    _, reg_type = winreg.QueryValueEx(INTERNET_SETTINGS, name)
-    winreg.SetValueEx(INTERNET_SETTINGS, name, 0, reg_type, value)
+    SetValueEx(INTERNET_SETTINGS, name, 0, 
+        QueryValueEx(INTERNET_SETTINGS, name)[1], value)
 
-# 启用代理
-def start():
-    stop()  # 先关闭代理,请求的代理一般来自api,如果前一个代理ip失效或者没加入白名单,会请求失败
-    proxyport=getproxyport()
-    set_key('ProxyEnable', 1)  # 启用
-    set_key('ProxyOverride', u'*.local;<local>')  # 绕过本地
-    set_key('ProxyServer', u'127.0.0.1:{0}'.format(proxyport))  # 代理IP及端口，将此代理修改为自己的代理IP
-    internet_set_option(0, INTERNET_OPTION_REFRESH, 0, 0)
-    internet_set_option(0, INTERNET_OPTION_SETTINGS_CHANGED, 0, 0)
+def set_proxy(proxy_name):
+    try:
+        set_key('ProxyEnable', PROXIES[proxy_name]['enable'])
+        print(PROXIES[proxy_name]['override'])
+        set_key('ProxyOverride', PROXIES[proxy_name]['override'])
+        set_key('ProxyServer', PROXIES[proxy_name]['server'])
 
+        # granting the system refresh for settings take effect
+        internet_set_option = ctypes.windll.Wininet.InternetSetOptionW
+        internet_set_option(0, 37, 0, 0)  # refresh
+        internet_set_option(0, 39, 0, 0)  # settings changed
+        return True
+    except KeyError:
+        print(f'Proxy {proxy_name} is not registered in PROXIES')
+        return False
 
-def stop():
-    # 停用代理
-    set_key('ProxyEnable', 0)  # 停用
-    internet_set_option(0, INTERNET_OPTION_REFRESH, 0, 0)
-    internet_set_option(0, INTERNET_OPTION_SETTINGS_CHANGED, 0, 0)
+def enable_default_proxy():
+    return set_proxy('default')
+
+def disable_proxy():
+    return set_proxy('off')
 
 # tun/系统代理模式切换
 def proxyswitch():
@@ -54,7 +69,7 @@ def proxyswitch():
         response = requests.patch(url,data=paramdata)
         result = response.status_code
         if result == 204:
-            stop()
+            disable_proxy()
             tun_yaml_mod("open")
             return True
     elif tunstatus == True:
@@ -66,7 +81,7 @@ def proxyswitch():
         response = requests.patch(url,data=paramdata)
         result = response.status_code
         if result == 204:
-            start()
+            enable_default_proxy()
             tun_yaml_mod("close")
             return False
 
@@ -102,5 +117,5 @@ def is_admin():
     except:
         return False
 
-#if __name__== "__main__" :
-#    addrule(getclashpath())
+# if __name__== "__main__" :
+#    enable_default_proxy()
