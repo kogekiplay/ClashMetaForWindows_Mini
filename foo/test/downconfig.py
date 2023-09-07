@@ -44,7 +44,6 @@ def open_config():
         subprocess.Popen(
             ["start", "config.yaml"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     except Exception as e:
-        print("无法打开文件:", e)
-
+        pass
 # if __name__== "__main__" :
 #    download_config()

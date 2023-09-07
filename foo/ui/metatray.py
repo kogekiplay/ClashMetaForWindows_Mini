@@ -8,10 +8,11 @@ import os
 from PySide6.QtWidgets import QSystemTrayIcon, QMenu, QWidget
 from PySide6.QtGui import QIcon, QAction
 from PySide6.QtCore import Signal, Slot, QSettings
-import img.app_icon_rc as app_rc # 由pyside6-rcc生成的资源文件
+import img.app_icon_rc as app_rc  # 由pyside6-rcc生成的资源文件
 
-#引入开机启动
-from foo.test.autostart import getexepath,add_to_startup,remove_from_startup
+# 引入开机启动
+from foo.test.autostart import getexepath, add_to_startup, remove_from_startup
+
 
 class MySysTrayWidget(QWidget):
     # 自定义个信号
@@ -48,8 +49,8 @@ class MySysTrayWidget(QWidget):
         self.__trayicon.activated.connect(self.iconActivated)
 
         # 配置菜单并显示托盘
-        self.__trayicon.setContextMenu(self.__traymenu) #把tpMenu设定为托盘的右键菜单
-        self.__trayicon.show()  #显示托盘   
+        self.__trayicon.setContextMenu(self.__traymenu)  # 把tpMenu设定为托盘的右键菜单
+        self.__trayicon.show()  # 显示托盘
 
         # These take the format of [<key list>, <keydown handler callback>, <keyup handler callback>]
         self.hotkey_bindings = [
@@ -75,11 +76,11 @@ class MySysTrayWidget(QWidget):
         self.__traymenu.addAction(a)
         self.__trayaction.append(a)
 
-    def iconActivated(self,reason):
+    def iconActivated(self, reason):
         if reason == QSystemTrayIcon.DoubleClick or reason == QSystemTrayIcon.Trigger:
             if self.__trayicon.isVisible() or self.__trayicon.isMinimized():
                 self.showUserInterface()
-    
+
     # 定义一个方法，用于注销热键
     def unregister_hotkey(self):
         # 使用global_hotkeys模块来注销热键
@@ -90,7 +91,7 @@ class MySysTrayWidget(QWidget):
     def on_setting_changed(self):
         # 获取设置菜单项的选中状态
         checked = self.startup_action.isChecked()
-        exe_path=getexepath()
+        exe_path = getexepath()
         # 根据选中状态显示不同的提示信息,并调用注册表函数
         if checked:
             add_to_startup(exe_path)
@@ -107,7 +108,7 @@ class MySysTrayWidget(QWidget):
         # 创建一个QSettings对象，并获取保存的设置值，指定ini格式和自定义文件名
         settings = QSettings("config/config.ini", QSettings.IniFormat)
         checked = settings.value("startup", False, type=bool)
-        exe_path=getexepath()
+        exe_path = getexepath()
         # 根据config恢复开机自启动注册表状态
         if checked == True:
             add_to_startup(exe_path)
@@ -120,7 +121,7 @@ class MySysTrayWidget(QWidget):
         # 真正的退出
         self.unregister_hotkey()
         self.__app.exit()
-    
+
     def showUserInterface(self):
         self.__window.show()
 

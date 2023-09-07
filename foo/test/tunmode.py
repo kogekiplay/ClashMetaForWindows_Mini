@@ -36,7 +36,6 @@ def set_key(name, value):
 def set_proxy(proxy_name):
     try:
         set_key('ProxyEnable', PROXIES[proxy_name]['enable'])
-        print(PROXIES[proxy_name]['override'])
         set_key('ProxyOverride', PROXIES[proxy_name]['override'])
         set_key('ProxyServer', PROXIES[proxy_name]['server'])
 
@@ -46,7 +45,6 @@ def set_proxy(proxy_name):
         internet_set_option(0, 39, 0, 0)  # settings changed
         return True
     except KeyError:
-        print(f'Proxy {proxy_name} is not registered in PROXIES')
         return False
 
 
