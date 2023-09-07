@@ -1,7 +1,8 @@
 import requests
 import re
+from foo.test.checkconfig import is_valid_yaml
 
-def downlaodconfig(url):
+def downlaod_config(url):
     # 定义一个正则表达式，匹配http或https开头的url
     regex = re.compile(
         r'^(?:http|ftp)s?://'  # http:// or https://
@@ -17,11 +18,17 @@ def downlaodconfig(url):
         r = requests.get(url=url, headers=headers)
         file_path="config.yaml"
         with open(file_path, "wb") as f:
-            f.write(r.content)
-            f.flush()
+            yaml_content= r.content
+            status = is_valid_yaml(yaml_content)
+            if status == True:
+                f.write(yaml_content)
+                f.flush()
+            else:
+                print("status:",status)
+                return status
         return True
     else:
         return False
 
 #if __name__== "__main__" :
-#    downlaodconfig()
+#    downlaod_config()

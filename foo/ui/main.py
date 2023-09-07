@@ -18,7 +18,7 @@ from foo.test.service import startservice,stopservice,stopserviceonly,startservi
 from foo.test.update import updateyacd,updatecore,replacecore
 from foo.test.yacdopen import yacdopen
 from foo.test.checkapi import checkinfo
-from foo.test.downconfig import downlaodconfig
+from foo.test.downconfig import downlaod_config
 
 class TextlineWidget (QWidget, Ui_Form):
   def __init__ (self):
@@ -416,8 +416,12 @@ class Ui_MainWindow(object):
         settings = QSettings("config/config.ini", QSettings.IniFormat) # 创建QSettings对象
         if settings.contains("url"): # 判断url键是否存在
             proxylink = settings.value("url") # 读取url并转换为字符串
-            status=downlaodconfig(proxylink)
-            if status == True:
+            status=downlaod_config(proxylink)
+            if isinstance(status, str):
+                msgBox.setIcon(QMessageBox.Icon.Information)
+                msgBox.setText(status)
+                msgBox.exec()
+            elif status == True:
                 msgBox.setIcon(QMessageBox.Icon.Information)
                 msgBox.setText("下载成功")
                 msgBox.exec()

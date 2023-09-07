@@ -24,9 +24,9 @@ AllowNoIcons=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 PrivilegesRequired=admin
 ;PrivilegesRequiredOverridesAllowed=dialog
-OutputDir=C:\Users\kogeki\Downloads
+OutputDir=G:\Downloads
 OutputBaseFilename=CMFW_setup
-SetupIconFile=C:\Users\kogeki\Documents\python-clash\img\logo.ico
+SetupIconFile=G:\Downloads\ClashMetaForWindows_Mini\img\logo.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern

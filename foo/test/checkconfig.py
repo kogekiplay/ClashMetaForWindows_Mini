@@ -11,6 +11,16 @@ def checkexist():
     else:
         return False
 
+# 校验yaml
+def is_valid_yaml(yaml_content):
+    try:
+        # 尝试加载 YAML 内容
+        yaml.safe_load(yaml_content)
+        return True
+    except yaml.YAMLError as e:
+        # 如果出现错误，说明 YAML 内容无效
+        return "YAML 校验错误:" + str(e)
+
 # 检查配置文件合法性
 def checkyaml():
     command = "cd foo/bin && clash.exe -d ./resources/ -f ../../config.yaml -t"
