@@ -1,6 +1,7 @@
 from foo.test.checkconfig import checkexist, checkyaml, yaml_mod
 from foo.test.cmd import cmdnoadmin
 from foo.test.tunmode import enable_default_proxy, disable_proxy
+from foo.test.downconfig import download_all_providers
 
 # 启动服务
 
@@ -20,6 +21,7 @@ def startservice():
                 output1 = output.find("started")
                 output2 = output.find("exists")
                 if output1 > 0 or output2 > 0:
+                    download_all_providers()
                     enable_default_proxy()
                     return True
                 else:
@@ -78,6 +80,7 @@ def startserviceonly():
                 output = cmdnoadmin(command)
                 output1 = output.find("started")
                 if output1 > 0:
+                    download_all_providers()
                     enable_default_proxy()
                     return True
                 else:
