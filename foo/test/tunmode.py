@@ -5,15 +5,16 @@ from sys import argv
 from winreg import OpenKey, QueryValueEx, SetValueEx
 from winreg import HKEY_CURRENT_USER, KEY_ALL_ACCESS
 import ctypes
-import os,sys,subprocess
-from foo.test.checkconfig import getproxyport,getuiport,tun_yaml_mod
+import os
+import sys
+import subprocess
+from foo.test.checkconfig import getproxyport, getuiport, tun_yaml_mod
 
-proxyport=getproxyport()
 PROXIES = {
     'default': {
         'enable': 1,
         'override': f'127.0.0.1;localhost;<local>',
-        'server': f'127.0.0.1:{proxyport}'
+        'server': '127.0.0.1:7891'
     },
     'off': {
         'enable': 0,
@@ -22,13 +23,15 @@ PROXIES = {
     },
 }
 
-INTERNET_SETTINGS = OpenKey(HKEY_CURRENT_USER, 
-    r'Software\Microsoft\Windows\CurrentVersion\Internet Settings',
-    0, KEY_ALL_ACCESS)
+INTERNET_SETTINGS = OpenKey(HKEY_CURRENT_USER,
+                            r'Software\Microsoft\Windows\CurrentVersion\Internet Settings',
+                            0, KEY_ALL_ACCESS)
+
 
 def set_key(name, value):
-    SetValueEx(INTERNET_SETTINGS, name, 0, 
-        QueryValueEx(INTERNET_SETTINGS, name)[1], value)
+    SetValueEx(INTERNET_SETTINGS, name, 0,
+               QueryValueEx(INTERNET_SETTINGS, name)[1], value)
+
 
 def set_proxy(proxy_name):
     try:
@@ -46,18 +49,24 @@ def set_proxy(proxy_name):
         print(f'Proxy {proxy_name} is not registered in PROXIES')
         return False
 
+
 def enable_default_proxy():
+    proxyport = getproxyport()
+    PROXIES['default']['server'] = f'127.0.0.1:{proxyport}'
     return set_proxy('default')
+
 
 def disable_proxy():
     return set_proxy('off')
 
 # tun/系统代理模式切换
+
+
 def proxyswitch():
-    uiport=getuiport()
+    uiport = getuiport()
     url = f"http://127.0.0.1:{uiport}/configs"
     response = urllib.request.urlopen(url)
-    config =  json.loads(response.read())
+    config = json.loads(response.read())
     tunstatus = config["tun"]["enable"]
     if tunstatus == False:
         paramdata = json.dumps({
@@ -65,8 +74,8 @@ def proxyswitch():
                 "enable": True
             }
         })
-        controlfirmware() #允许通过Windows防火墙
-        response = requests.patch(url,data=paramdata)
+        controlfirmware()  # 允许通过Windows防火墙
+        response = requests.patch(url, data=paramdata)
         result = response.status_code
         if result == 204:
             disable_proxy()
@@ -78,7 +87,7 @@ def proxyswitch():
                 "enable": False
             }
         })
-        response = requests.patch(url,data=paramdata)
+        response = requests.patch(url, data=paramdata)
         result = response.status_code
         if result == 204:
             enable_default_proxy()
@@ -88,28 +97,37 @@ def proxyswitch():
 
 def getclashpath():
     # get the exe file path
-    clash_path = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../bin/clash.exe'))
+    clash_path = os.path.normpath(os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), '../bin/clash.exe'))
     return clash_path
 
 # Clash.exe 放行windows防火墙
+
+
 def controlfirmware():
-    clash_path=getclashpath()
+    clash_path = getclashpath()
     rule_name = "Clash Meta For Windows Mini"
-    output = subprocess.check_output(["netsh", "advfirewall", "firewall", "show", "rule", "name="f"{rule_name}"""])
+    output = subprocess.check_output(
+        ["netsh", "advfirewall", "firewall", "show", "rule", "name="f"{rule_name}"""])
     if b"No rules match the specified criteria." in output:
         addrule(clash_path)
     else:
         # print(f"Rule {rule_name} already exists，将重新添加")
-        subprocess.call(["netsh", "advfirewall", "firewall", "delete", "rule", "name=""Clash Meta For Windows Mini"""],stdout=subprocess.DEVNULL)
+        subprocess.call(["netsh", "advfirewall", "firewall", "delete", "rule",
+                        "name=""Clash Meta For Windows Mini"""], stdout=subprocess.DEVNULL)
         addrule(clash_path)
 
-def addrule(clash_path:str):
+
+def addrule(clash_path: str):
     if is_admin():
-        subprocess.call(["netsh", "advfirewall", "firewall", "add", "rule", "name=""Clash Meta For Windows Mini""", "dir=in", "action=allow", f"program="f"{clash_path}""", "enable=yes", "description=""1"""],stdout=subprocess.DEVNULL)
-        #subprocess.run(["netsh", "advfirewall", "firewall", "delete", "rule", "name=\"Clash\""])
+        subprocess.call(["netsh", "advfirewall", "firewall", "add", "rule", "name=""Clash Meta For Windows Mini""", "dir=in",
+                        "action=allow", f"program="f"{clash_path}""", "enable=yes", "description=""1"""], stdout=subprocess.DEVNULL)
+        # subprocess.run(["netsh", "advfirewall", "firewall", "delete", "rule", "name=\"Clash\""])
     else:
         # Re-run the program with admin rights
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
+        ctypes.windll.shell32.ShellExecuteW(
+            None, "runas", sys.executable, __file__, None, 1)
+
 
 def is_admin():
     try:

@@ -91,8 +91,11 @@ def tun_yaml_mod(status: str):
 
 
 def getproxyport():
-    yaml_data = loadyaml()
-    proxyport = yaml_data["mixed-port"]
+    if checkexist():
+        yaml_data = loadyaml()
+        proxyport = yaml_data["mixed-port"]
+    else:
+        proxyport = 7891
     return proxyport
 
 # 获取面板端口
