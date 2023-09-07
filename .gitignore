@@ -3,3 +3,4 @@ build
 dist
 config.yaml
 o
+myenv

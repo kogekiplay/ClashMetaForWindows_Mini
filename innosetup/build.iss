@@ -41,9 +41,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: {app}; Permissions: users-full
 
 [Files]
-Source: "C:\Users\kogeki\Documents\python-clash\dist\run\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kogeki\Documents\python-clash\dist\run\*";Excludes:"\foo\bin\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\kogeki\Documents\python-clash\dist\run\foo\bin\*"; DestDir: "{app}\foo\bin"; Flags: onlyifdoesntexist recursesubdirs createallsubdirs  
+Source: "G:\Downloads\ClashMetaForWindows_Mini\dist\run\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "G:\Downloads\ClashMetaForWindows_Mini\dist\run\*";Excludes:"\foo\bin\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "G:\Downloads\ClashMetaForWindows_Mini\dist\run\foo\bin\*"; DestDir: "{app}\foo\bin"; Flags: onlyifdoesntexist recursesubdirs createallsubdirs  
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

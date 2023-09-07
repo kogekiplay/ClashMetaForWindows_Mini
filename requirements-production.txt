@@ -1,8 +1,8 @@
 Requests
 PySide6
-pyqt6-tools
 pypiwin32
 pyyaml
 global_hotkeys
 psutil
 winshell
+pyinstaller
