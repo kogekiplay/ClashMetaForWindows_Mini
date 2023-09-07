@@ -16,8 +16,8 @@ from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLabel,
 from foo.ui.textline_ui import Ui_Form
 from foo.test.tunmode import proxyswitch
 from foo.test.service import startservice, stopservice, stopserviceonly, startserviceonly
-from foo.test.update import updateyacd, updatecore, replacecore
-from foo.test.yacdopen import yacdopen
+from foo.test.update import updatexd, updatecore, replacecore
+from foo.test.xdopen import xdopen
 from foo.test.checkapi import checkinfo
 from foo.test.downconfig import download_config, open_config
 
@@ -185,8 +185,8 @@ class Ui_MainWindow(object):
         self.pushButton_2.clicked.connect(self.stopservicemsg)
         self.pushButton_3.clicked.connect(self.proxyswitchmsg)
         self.pushButton_5.clicked.connect(self.updatecoremsg)
-        self.pushButton_4.clicked.connect(self.updateyacdmsg)
-        self.pushButton_6.clicked.connect(self.yacdopenmsg)
+        self.pushButton_4.clicked.connect(self.updatexdmsg)
+        self.pushButton_6.clicked.connect(self.xdopenmsg)
         self.pushButton_10.clicked.connect(self.open_text_widget)
         self.pushButton_11.clicked.connect(self.configupdatemsg)
         self.pushButton_9.clicked.connect(self.quit)
@@ -224,9 +224,9 @@ class Ui_MainWindow(object):
         self.pushButton_5.setText(QCoreApplication.translate(
             "MainWindow", u"更新 alpha 内核", None))
         self.pushButton_4.setText(QCoreApplication.translate(
-            "MainWindow", u"更新 Yacd-Meta", None))
+            "MainWindow", u"更新 XD 面板", None))
         self.pushButton_6.setText(QCoreApplication.translate(
-            "MainWindow", u"打开 yacd 面板", None))
+            "MainWindow", u"打开 XD 面板", None))
         self.pushButton_10.setText(
             QCoreApplication.translate("MainWindow", u"下载配置文件", None))
         self.pushButton_11.setText(
@@ -360,12 +360,12 @@ class Ui_MainWindow(object):
             msgBox.setText("tun模式已关闭,系统代理已开启")
             msgBox.exec()
 
-    def updateyacdmsg(self):
+    def updatexdmsg(self):
         msgBox = QMessageBox()
         msgBox.setWindowTitle("提示")
         msgBox.setStandardButtons(QMessageBox.Ok)
         msgBox.setWindowIcon(QIcon("img\logo.ico"))
-        status = updateyacd()
+        status = updatexd()
         if status == True:
             msgBox.setIcon(QMessageBox.Icon.Information)
             msgBox.setText("更新成功")
@@ -412,12 +412,12 @@ class Ui_MainWindow(object):
             msgBox.setText("更新失败，服务无法停止")
             msgBox.exec()
 
-    def yacdopenmsg(self):
+    def xdopenmsg(self):
         msgBox = QMessageBox()
         msgBox.setWindowTitle("提示")
         msgBox.setStandardButtons(QMessageBox.Ok)
         msgBox.setWindowIcon(QIcon("img\logo.ico"))
-        status = yacdopen()
+        status = xdopen()
         if status == True:
             return
         else:
