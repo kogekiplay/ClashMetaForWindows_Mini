@@ -63,12 +63,18 @@ def parse_config_file(mode="write", proxy=True, tun=False):
     config = configparser.ConfigParser()
     config.read('config/config.ini')
     if mode == "write":
-        config.set('General', 'proxy', str(proxy))
-        config.set('General', 'tun', str(tun))
+        if 'General' not in config:
+            config['General'] = {}  # 如果General部分不存在，创建它
+        config['General']['proxy'] = str(proxy)
+        config['General']['tun'] = str(tun)
         with open('config/config.ini', 'w') as configfile:
             config.write(configfile)
     elif mode == "read":
-        return config.getboolean('General', 'proxy'), config.getboolean('General', 'tun')
+        if 'General' in config and 'proxy' in config['General'] and 'tun' in config['General']:
+            return config.getboolean('General', 'proxy'), config.getboolean('General', 'tun')
+        else:
+            # 如果proxy和tun不存在，返回默认值 False
+            return False, False
     else:
         return False
 
