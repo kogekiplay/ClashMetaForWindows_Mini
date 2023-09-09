@@ -1,6 +1,7 @@
 import urllib
 import requests
 import json
+import configparser
 from sys import argv
 from winreg import OpenKey, QueryValueEx, SetValueEx
 from winreg import HKEY_CURRENT_USER, KEY_ALL_ACCESS
@@ -57,6 +58,16 @@ def disable_proxy():
     return set_proxy('off')
 
 
+# 修改配置文件的函数，将startup、proxy和tun的值写入config/config.ini
+def update_config_file(proxy, tun):
+    config = configparser.ConfigParser()
+    config.read('config/config.ini')
+    config.set('General', 'proxy', str(proxy))
+    config.set('General', 'tun', str(tun))
+    with open('config/config.ini', 'w') as configfile:
+        config.write(configfile)
+
+
 # tun/系统代理模式切换
 def proxyswitch():
     uiport = getuiport()
@@ -70,11 +81,15 @@ def proxyswitch():
         firewall_manager.control_firmware(
             enable=enable_firmware)
         switch_tun_mode(True)
+        disable_proxy()
         tun_yaml_mod("open")
+        update_config_file(False, True)
         return True
     elif tunstatus == True:
         switch_tun_mode(False)
+        enable_default_proxy()
         tun_yaml_mod("close")
+        update_config_file(True, False)
         return False
 
     #     paramdata = json.dumps({

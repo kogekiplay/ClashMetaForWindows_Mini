@@ -7,9 +7,9 @@ import os
 # 实现系统托盘程序
 from PySide6.QtWidgets import QSystemTrayIcon, QMenu, QWidget
 from PySide6.QtGui import QIcon, QAction
-from PySide6.QtCore import Signal, Slot, QSettings
+from PySide6.QtCore import Signal, Slot, QSettings, QFileSystemWatcher
 import img.app_icon_rc as app_rc  # 由pyside6-rcc生成的资源文件
-from foo.test.tunmode import switch_tun_mode, enable_default_proxy, disable_proxy
+from foo.test.tunmode import enable_default_proxy, switch_tun_mode, disable_proxy
 from foo.test.xdopen import xdopen
 
 # 引入开机启动
@@ -22,6 +22,10 @@ class MySysTrayWidget(QWidget):
 
     def __init__(self, ui=None, app=None, window=None):
         QWidget.__init__(self)  # 必须调用，否则信号系统无法启用
+
+        # 创建一个QFileSystemWatcher来监视config.ini文件的变化
+        self.file_watcher = QFileSystemWatcher()
+        self.file_watcher.addPath("config/config.ini")
 
         # 私有变量
         self.__ui = ui
@@ -38,6 +42,8 @@ class MySysTrayWidget(QWidget):
         self.__traymenu = QMenu()
         self.__trayaction = []
 
+        # 连接文件变化的信号与槽
+        self.file_watcher.fileChanged.connect(self.on_config_file_changed)
         # 创建一个代理菜单项，并设置为可选中的
         self.proxy_switch_action = QAction(self.tr("系统代理"), self)
         self.proxy_switch_action.setCheckable(True)
@@ -135,7 +141,7 @@ class MySysTrayWidget(QWidget):
             self.proxy_switch_action.setChecked(checked)
         # 根据选中状态显示不同的提示信息,并启用系统代理
         if checked:
-            enable_default_proxy()
+            print(enable_default_proxy())
         else:
             disable_proxy()
         # 保存设置到QSettings对象中，指定ini格式和自定义文件名
@@ -162,6 +168,10 @@ class MySysTrayWidget(QWidget):
     def open_dashboard(self):
         xdopen()
 
+    def on_config_file_changed(self):
+        # 当config.ini文件发生变化时，执行restore_settings方法
+        self.restore_settings()
+
     # 定义一个方法，用于恢复设置
     def restore_settings(self):
         # 创建一个QSettings对象，并获取保存的设置值，指定ini格式和自定义文件名
@@ -177,18 +187,19 @@ class MySysTrayWidget(QWidget):
         elif startup_checked == False:
             remove_from_startup(exe_path)
         self.startup_action.setChecked(startup_checked)
-        # 设置系统代理菜单项的选中状态
-        if proxy_checked == True:
-            enable_default_proxy()
-        elif proxy_checked == False:
-            disable_proxy()
-        self.proxy_switch_action.setChecked(proxy_checked)
+
         # 设置tun模式菜单项的选中状态
         if tun_checked == True:
             switch_tun_mode(True)
         elif tun_checked == False:
             switch_tun_mode(False)
         self.tun_switch_action.setChecked(tun_checked)
+        # 设置系统代理菜单项的选中状态
+        if proxy_checked == True:
+            enable_default_proxy()
+        elif proxy_checked == False:
+            disable_proxy()
+        self.proxy_switch_action.setChecked(proxy_checked)
 
     def quit(self):
         # 真正的退出

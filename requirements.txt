@@ -6,3 +6,4 @@ pyyaml
 global_hotkeys
 psutil
 winshell
+pyinstaller
