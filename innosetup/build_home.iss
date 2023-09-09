@@ -56,16 +56,16 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [Code]  
-// ï¿½Ô¶ï¿½ï¿½åº¯ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Òªï¿½Ð¶Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½exeï¿½ï¿½ï¿½ï¿½
+// ×Ô¶¨Òåº¯Êý£¬ÅÐ¶ÏÈí¼þÊÇ·ñÔËÐÐ£¬²ÎÊýÎªÐèÒªÅÐ¶ÏµÄÈí¼þµÄexeÃû³Æ
 function CheckSoftRun(strExeName: String): Boolean;
-// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+// ±äÁ¿¶¨Òå
 var ErrorCode: Integer;
 var bRes: Boolean;
 var strFileContent: AnsiString;
-var strTmpPath: String;  // ï¿½ï¿½Ê±Ä¿Â¼
-var strTmpFile: String;  // ï¿½ï¿½Ê±ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý½ï¿½ï¿½
-var strCmdFind: String;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-var strCmdKill: String;  // ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+var strTmpPath: String;  // ÁÙÊ±Ä¿Â¼
+var strTmpFile: String;  // ÁÙÊ±ÎÄ¼þ£¬±£´æ²éÕÒÈí¼þÊý¾Ý½á¹û
+var strCmdFind: String;  // ²éÕÒÈí¼þÃüÁî
+var strCmdKill: String;  // ÖÕÖ¹Èí¼þÃüÁî
 begin
   strTmpPath := GetTempDir();
   strTmpFile := Format('%sfindSoftRes.txt', [strTmpPath]);
@@ -78,15 +78,15 @@ begin
       if bRes then begin
          if StrToInt(strFileContent) > 0 then begin
             if MsgBox(ExpandConstant('{cm:checkSoftTip}'), mbConfirmation, MB_OKCANCEL) = IDOK then begin
-             // ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
+             // ÖÕÖ¹³ÌÐò
              ShellExec('open', ExpandConstant('{cmd}'), strCmdKill, '', SW_HIDE, ewNoWait, ErrorCode);
-             Result:= true;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×°
+             Result:= true;// ¼ÌÐø°²×°
             end else begin
-             Result:= false;// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½
+             Result:= false;// °²×°³ÌÐòÍË³ö
              Exit;
             end;
          end else begin
-            // ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            // Èí¼þÃ»ÔÚÔËÐÐ
             Result:= true;
             Exit;
          end;
@@ -95,7 +95,7 @@ begin
   Result :=true;
 end;
 
-// ï¿½ï¿½Ê¼Ò³ï¿½ï¿½Ò»ï¿½ï¿½Ê±ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
+// ¿ªÊ¼Ò³ÏÂÒ»²½Ê±ÅÐ¶ÏÈí¼þÊÇ·ñÔËÐÐ
 function NextButtonClick(CurPageID: Integer): Boolean;
 begin
   if 1=CurPageID then begin
@@ -105,7 +105,7 @@ begin
   Result:= true;
 end;
 
-// Ð¶ï¿½ï¿½Ê±ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½
+// Ð¶ÔØÊ±¹Ø±ÕÈí¼þ
 function InitializeUninstall(): Boolean;
 begin
   Result := CheckSoftRun('{#MyAppExeName}');
@@ -113,4 +113,4 @@ end;
 
 
 [CustomMessages]
-chinesesimplified.checkSoftTip=ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½âµ½ï¿½ï¿½ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½%n%nï¿½ï¿½ï¿½"È·ï¿½ï¿½"ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"È¡ï¿½ï¿½"ï¿½ï¿½
+chinesesimplified.checkSoftTip=°²×°³ÌÐò¼ì²âµ½½«°²×°µÄÈí¼þÕýÔÚÔËÐÐ£¡%n%nµã»÷"È·¶¨"ÖÕÖ¹Èí¼þºó¼ÌÐø²Ù×÷£¬·ñÔòµã»÷"È¡Ïû"¡£
