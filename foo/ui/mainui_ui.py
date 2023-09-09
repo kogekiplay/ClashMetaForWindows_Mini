@@ -162,7 +162,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate(
-            "MainWindow", u"CMFW mini 1.8", None))
+            "MainWindow", u"CMFW mini 1.85", None))
         self.label.setText(QCoreApplication.translate(
             "MainWindow", u"<html><head/><body><p><span style=\" font-size:14pt;\">Clash Meta For Windows Mini</span></p></body></html>", None))
         self.label_2.setText(QCoreApplication.translate(

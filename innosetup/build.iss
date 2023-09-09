@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Clash Meta For Windows Mini"
-#define MyAppVersion "1.8"
+#define MyAppVersion "1.85"
 #define MyAppPublisher "Kogeki, Inc."
 #define MyAppURL "https://github.com/kogekiplay/ClashMetaForWindows_Mini"
 #define MyAppExeName "CMFW_mini.exe"
