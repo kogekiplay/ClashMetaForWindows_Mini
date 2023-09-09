@@ -29,8 +29,11 @@ INTERNET_SETTINGS = OpenKey(HKEY_CURRENT_USER,
 
 
 def set_key(name, value):
-    SetValueEx(INTERNET_SETTINGS, name, 0,
-               QueryValueEx(INTERNET_SETTINGS, name)[1], value)
+    try:
+        SetValueEx(INTERNET_SETTINGS, name, 0,
+                   QueryValueEx(INTERNET_SETTINGS, name)[1], value)
+    except:
+        return False
 
 
 def set_proxy(proxy_name):
@@ -82,10 +85,13 @@ def parse_config_file(mode="write", proxy=True, tun=False):
 # tun/系统代理模式切换
 def proxyswitch():
     uiport = getuiport()
-    url = f"http://127.0.0.1:{uiport}/configs"
-    response = urllib.request.urlopen(url)
-    config = json.loads(response.read())
-    tunstatus = config["tun"]["enable"]
+    try:
+        url = f"http://127.0.0.1:{uiport}/configs"
+        response = urllib.request.urlopen(url)
+        config = json.loads(response.read())
+        tunstatus = config["tun"]["enable"]
+    except:
+        return False
     if tunstatus == False:
         firewall_manager = FirewallManager()
         enable_firmware = True  # Change this to True or False as needed
@@ -138,12 +144,15 @@ def switch_tun_mode(tun_enable: False):
             "enable": tun_enable
         }
     })
-    response = requests.patch(url, data=paramdata)
-    result = response.status_code
-    if result == 204:
-        disable_proxy()
-        tun_yaml_mod("open")
-        return True
+    try:
+        response = requests.patch(url, data=paramdata)
+        result = response.status_code
+        if result == 204:
+            disable_proxy()
+            tun_yaml_mod("open")
+            return True
+    except:
+        return False
 
 
 def getclashpath():
