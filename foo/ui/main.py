@@ -9,7 +9,7 @@
 ################################################################################
 import global_hotkeys as hotkey
 from PySide6.QtCore import (
-    QCoreApplication, QMetaObject, QRect, QTimer, QSettings)
+    QCoreApplication, QMetaObject, QRect, QTimer, QSettings, QFileSystemWatcher)
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLabel,
                                QPushButton, QStatusBar, QVBoxLayout, QWidget, QMessageBox)
@@ -31,6 +31,10 @@ class TextlineWidget (QWidget, Ui_Form):
 
 class Ui_MainWindow(object):
 
+    def on_config_file_changed(self, path):
+        # 当config.ini文件发生变化时，执行restore_settings方法
+        self.update_status_label()
+
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
@@ -50,6 +54,12 @@ class Ui_MainWindow(object):
                                  "QLabel {\n"
                                  "	color: #6f9aca;\n"
                                  "}")
+        # 创建一个QFileSystemWatcher来监视config.ini文件的变化
+        self.file_watcher = QFileSystemWatcher()
+        self.file_watcher.addPath("config/config.ini")
+        # 连接文件变化的信号与槽
+        self.file_watcher.fileChanged.connect(self.on_config_file_changed)
+
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.label = QLabel(self.centralwidget)

@@ -55,3 +55,63 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
+[Code]  
+// 自定义函数，判断软件是否运行，参数为需要判断的软件的exe名称
+function CheckSoftRun(strExeName: String): Boolean;
+// 变量定义
+var ErrorCode: Integer;
+var bRes: Boolean;
+var strFileContent: AnsiString;
+var strTmpPath: String;  // 临时目录
+var strTmpFile: String;  // 临时文件，保存查找软件数据结果
+var strCmdFind: String;  // 查找软件命令
+var strCmdKill: String;  // 终止软件命令
+begin
+  strTmpPath := GetTempDir();
+  strTmpFile := Format('%sfindSoftRes.txt', [strTmpPath]);
+  strCmdFind := Format('/c tasklist /nh|find /c /i "%s" > "%s"', [strExeName, strTmpFile]);
+  strCmdKill := Format('/c taskkill /f /t /im %s', [strExeName]);
+  bRes := ShellExec('open', ExpandConstant('{cmd}'), strCmdFind, '', SW_HIDE, ewWaitUntilTerminated, ErrorCode);
+  if bRes then begin
+      bRes := LoadStringFromFile(strTmpFile, strFileContent);
+      strFileContent := Trim(strFileContent);
+      if bRes then begin
+         if StrToInt(strFileContent) > 0 then begin
+            if MsgBox(ExpandConstant('{cm:checkSoftTip}'), mbConfirmation, MB_OKCANCEL) = IDOK then begin
+             // 终止程序
+             ShellExec('open', ExpandConstant('{cmd}'), strCmdKill, '', SW_HIDE, ewNoWait, ErrorCode);
+             Result:= true;// 继续安装
+            end else begin
+             Result:= false;// 安装程序退出
+             Exit;
+            end;
+         end else begin
+            // 软件没在运行
+            Result:= true;
+            Exit;
+         end;
+      end;
+  end;
+  Result :=true;
+end;
+
+// 开始页下一步时判断软件是否运行
+function NextButtonClick(CurPageID: Integer): Boolean;
+begin
+  if 1=CurPageID then begin
+      Result := CheckSoftRun('{#MyAppExeName}');
+      Exit;
+  end; 
+  Result:= true;
+end;
+
+// 卸载时关闭软件
+function InitializeUninstall(): Boolean;
+begin
+  Result := CheckSoftRun('{#MyAppExeName}');
+end;
+
+
+[CustomMessages]
+chinesesimplified.checkSoftTip=安装程序检测到将安装的软件正在运行！%n%n点击"确定"终止软件后继续操作，否则点击"取消"。
+

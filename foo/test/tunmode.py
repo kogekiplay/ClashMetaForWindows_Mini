@@ -59,13 +59,18 @@ def disable_proxy():
 
 
 # 修改配置文件的函数，将startup、proxy和tun的值写入config/config.ini
-def update_config_file(proxy, tun):
+def parse_config_file(mode="write", proxy=True, tun=False):
     config = configparser.ConfigParser()
     config.read('config/config.ini')
-    config.set('General', 'proxy', str(proxy))
-    config.set('General', 'tun', str(tun))
-    with open('config/config.ini', 'w') as configfile:
-        config.write(configfile)
+    if mode == "write":
+        config.set('General', 'proxy', str(proxy))
+        config.set('General', 'tun', str(tun))
+        with open('config/config.ini', 'w') as configfile:
+            config.write(configfile)
+    elif mode == "read":
+        return config.getboolean('General', 'proxy'), config.getboolean('General', 'tun')
+    else:
+        return False
 
 
 # tun/系统代理模式切换
@@ -83,13 +88,13 @@ def proxyswitch():
         switch_tun_mode(True)
         disable_proxy()
         tun_yaml_mod("open")
-        update_config_file(False, True)
+        parse_config_file(mode="write", proxy=False, tun=True)
         return True
     elif tunstatus == True:
         switch_tun_mode(False)
         enable_default_proxy()
         tun_yaml_mod("close")
-        update_config_file(True, False)
+        parse_config_file(mode="write", proxy=True, tun=False)
         return False
 
     #     paramdata = json.dumps({
