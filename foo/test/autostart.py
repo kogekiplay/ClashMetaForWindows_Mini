@@ -12,6 +12,7 @@ def getexepath():
             exe_path = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../run.pyw'))
         return exe_path
 
+
 def add_to_startup(exe_path):
     # get the startup folder path
     startup_folder = os.path.join(os.getenv('APPDATA'), r'Microsoft\Windows\Start Menu\Programs\Startup')
@@ -19,8 +20,10 @@ def add_to_startup(exe_path):
     exe_name = os.path.basename(exe_path)
     # get the shortcut file name
     shortcut_name = exe_name + '.lnk'
+    # get the target file path
+    target_path = os.path.join(startup_folder, shortcut_name)
     # check if the shortcut file already exists in the startup folder
-    if not os.path.exists(os.path.join(startup_folder, shortcut_name)):
+    if not os.path.exists(target_path):
         # create a shortcut object
         shortcut = winshell.shortcut(exe_path)
         # get the exe folder
@@ -28,7 +31,7 @@ def add_to_startup(exe_path):
         # set the working directory
         shortcut.working_directory = exe_folder
         # save the shortcut to the startup folder
-        shortcut.write(os.path.join(startup_folder, shortcut_name))
+        shortcut.write(target_path)
 
 def remove_from_startup(exe_path):
     # get the startup folder path
@@ -37,7 +40,9 @@ def remove_from_startup(exe_path):
     exe_name = os.path.basename(exe_path)
     # get the shortcut file name
     shortcut_name = exe_name + '.lnk'
+    # get the target file path
+    target_path = os.path.join(startup_folder, shortcut_name)
     # check if the shortcut file exists in the startup folder
-    if os.path.exists(os.path.join(startup_folder, shortcut_name)):
+    if os.path.exists(target_path):
         # remove the shortcut file from the startup folder
-        os.remove(os.path.join(startup_folder, shortcut_name))
+        os.remove(target_path)

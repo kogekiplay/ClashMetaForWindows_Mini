@@ -68,7 +68,6 @@ def yaml_mod():
 
 def tun_yaml_mod(status: str):
     yaml_data = loadyaml()
-    # print(yaml_data)
     if status == "open":
         tun_open_data = {'auto-detect-interface': True, 'auto-route': True,
                          'dns-hijack': ['0.0.0.0:53'], 'enable': True, 'stack': 'system'}
@@ -114,5 +113,6 @@ def loadyaml():
         data = yaml.safe_load(f)
     return data
 
-# if __name__== "__main__" :
-#    tun_yaml_mod("close")
+
+# if __name__ == "__main__":
+#     getproxyport()

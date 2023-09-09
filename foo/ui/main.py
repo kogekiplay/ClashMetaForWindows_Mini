@@ -14,6 +14,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLabel,
                                QPushButton, QStatusBar, QVBoxLayout, QWidget, QMessageBox)
 from foo.ui.textline_ui import Ui_Form
+from foo.ui.metatray import MySysTrayWidget
 from foo.test.tunmode import proxyswitch
 from foo.test.service import startservice, stopservice, stopserviceonly, startserviceonly
 from foo.test.update import updatexd, updatecore, replacecore
@@ -164,15 +165,15 @@ class Ui_MainWindow(object):
         self.timer = QTimer()
         # 连接定时器的信号和更新标签的槽函数
         self.timer.timeout.connect(self.update_status_label)
-        # 启动定时器，每隔30秒触发一次
-        self.timer.start(30000)
+        # 启动定时器，每隔60秒触发一次
+        self.timer.start(60000)
 
         # 创建一个定时器对象
         self.timer1 = QTimer()
         # 连接定时器的信号和更新标签的槽函数
         self.timer1.timeout.connect(self.update_memory_label)
-        # 启动定时器，每隔5秒触发一次
-        self.timer1.start(5000)
+        # 启动定时器，每隔30秒触发一次
+        self.timer1.start(30000)
 
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -196,7 +197,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate(
-            "MainWindow", u"CMFW mini 1.7", None))
+            "MainWindow", u"CMFW mini 1.8", None))
         MainWindow.setWindowIcon(QIcon("img\logo.ico"))
         self.label.setText(QCoreApplication.translate(
             "MainWindow", u"<html><head/><body><p><span style=\" font-size:14pt;\">Clash Meta For Windows Mini</span></p></body></html>", None))
@@ -258,6 +259,8 @@ class Ui_MainWindow(object):
         if status == True:
             msgBox.setIcon(QMessageBox.Icon.Information)
             msgBox.setText("服务安装并启动成功，系统代理已打开！")
+            self.update_status_label()  # 更新状态信息
+            self.update_memory_label()  # 更新内存信息
             msgBox.exec()
         elif status == False:
             msgBox.setIcon(QMessageBox.Icon.Critical)
@@ -291,6 +294,8 @@ class Ui_MainWindow(object):
         if status == True:
             msgBox.setIcon(QMessageBox.Icon.Information)
             msgBox.setText("服务卸载成功")
+            self.update_status_label()  # 更新状态信息
+            self.update_memory_label()  # 更新内存信息
             msgBox.exec()
         elif status == False:
             msgBox.setIcon(QMessageBox.Icon.Warning)
@@ -306,6 +311,8 @@ class Ui_MainWindow(object):
         if status == True:
             msgBox.setIcon(QMessageBox.Icon.Information)
             msgBox.setText("服务启动成功，系统代理已打开")
+            self.update_status_label()  # 更新状态信息
+            self.update_memory_label()  # 更新内存信息
             msgBox.exec()
         elif status == False:
             msgBox.setIcon(QMessageBox.Icon.Critical)
@@ -339,6 +346,8 @@ class Ui_MainWindow(object):
         if status == True:
             msgBox.setIcon(QMessageBox.Icon.Information)
             msgBox.setText("停止成功，系统代理已关闭")
+            self.update_status_label()  # 更新状态信息
+            self.update_memory_label()  # 更新内存信息
             msgBox.exec()
         elif status == False:
             msgBox.setIcon(QMessageBox.Icon.Warning)

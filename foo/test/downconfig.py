@@ -70,8 +70,6 @@ def download_all_providers():
         provider_names = yaml_data["proxy-providers"].keys()
         for name in provider_names:
             url = yaml_data["proxy-providers"][name]["url"]
-            print(url)
-            print(name)
             result = download_provider(url, name)
             if result:
                 yaml_data["proxy-providers"][name]["path"] = f"./proxy-providers/{name}.yaml"

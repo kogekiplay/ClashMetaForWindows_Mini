@@ -1,23 +1,24 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainui.ui'
+# Form generated from reading UI file 'mainui.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.0
+# Created by: Qt User Interface Compiler version 6.5.0
 ##
-## WARNING! All changes made in this file will be lost when recompiling UI file!
+# WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
+                            QMetaObject, QObject, QPoint, QRect,
+                            QSize, QTime, QUrl, Qt)
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
+                           QFont, QFontDatabase, QGradient, QIcon,
+                           QImage, QKeySequence, QLinearGradient, QPainter,
+                           QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLabel,
-    QMainWindow, QPushButton, QSizePolicy, QStatusBar,
-    QVBoxLayout, QWidget)
+                               QMainWindow, QPushButton, QSizePolicy, QStatusBar,
+                               QVBoxLayout, QWidget)
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -25,20 +26,20 @@ class Ui_MainWindow(object):
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(341, 416)
         MainWindow.setStyleSheet(u"QPushButton{\n"
-"	color:#ffffff; /*\u6587\u5b57\u989c\u8272*/\n"
-"	background-color:qlineargradient(x1: 1, y1: 0, x2: 0, y2: 0, stop:0 #eeaeca, stop: 1 #94bbe9);/*\u80cc\u666f\u8272*/\n"
-"	border-style:outset; /*\u8fb9\u6846\u98ce\u683c*/\n"
-"	border-width:2px;/*\u8fb9\u6846\u5bbd\u5ea6*/\n"
-"	border-radius:10px; /*\u8fb9\u6846\u5012\u89d2*/\n"
-"	font:bold 14px; /*\u5b57\u4f53*/\n"
-" 	font-family: \"Microsoft YaHei\";\n"
-"	min-width:100px;/*\u63a7\u4ef6\u6700\u5c0f\u5bbd\u5ea6*/\n"
-"	min-height:25px;/*\u63a7\u4ef6\u6700\u5c0f\u9ad8\u5ea6*/\n"
-"	padding:4px;/*\u5185\u8fb9\u8ddd*/\n"
-"}\n"
-"QLabel {\n"
-"	color: #6f9aca;\n"
-"}")
+                                 "	color:#ffffff; /*\u6587\u5b57\u989c\u8272*/\n"
+                                 "	background-color:qlineargradient(x1: 1, y1: 0, x2: 0, y2: 0, stop:0 #eeaeca, stop: 1 #94bbe9);/*\u80cc\u666f\u8272*/\n"
+                                 "	border-style:outset; /*\u8fb9\u6846\u98ce\u683c*/\n"
+                                 "	border-width:2px;/*\u8fb9\u6846\u5bbd\u5ea6*/\n"
+                                 "	border-radius:10px; /*\u8fb9\u6846\u5012\u89d2*/\n"
+                                 "	font:bold 14px; /*\u5b57\u4f53*/\n"
+                                 " 	font-family: \"Microsoft YaHei\";\n"
+                                 "	min-width:100px;/*\u63a7\u4ef6\u6700\u5c0f\u5bbd\u5ea6*/\n"
+                                 "	min-height:25px;/*\u63a7\u4ef6\u6700\u5c0f\u9ad8\u5ea6*/\n"
+                                 "	padding:4px;/*\u5185\u8fb9\u8ddd*/\n"
+                                 "}\n"
+                                 "QLabel {\n"
+                                 "	color: #6f9aca;\n"
+                                 "}")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.label = QLabel(self.centralwidget)
@@ -63,7 +64,6 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addWidget(self.label_3)
 
-
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
         self.horizontalLayout_3 = QHBoxLayout()
@@ -77,7 +77,6 @@ class Ui_MainWindow(object):
         self.label_5.setObjectName(u"label_5")
 
         self.horizontalLayout_3.addWidget(self.label_5)
-
 
         self.verticalLayout.addLayout(self.horizontalLayout_3)
 
@@ -142,7 +141,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.pushButton_11, 4, 1, 1, 1)
 
-
         self.verticalLayout_2.addLayout(self.gridLayout)
 
         self.pushButton_9 = QPushButton(self.widget)
@@ -163,22 +161,38 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"CMFW mini 1.7", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:14pt;\">Clash Meta For Windows Mini</span></p></body></html>", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">\u8fd0\u884c\u72b6\u6001\uff1a</span></p></body></html>", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">NaN</span></p></body></html>", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">\u5185\u5b58\u5360\u7528\uff1a</span></p></body></html>", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">NaN</span></p></body></html>", None))
-        self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"Clash Meta \u670d\u52a1\u5b89\u88c5", None))
-        self.pushButton_8.setText(QCoreApplication.translate("MainWindow", u"Clash Meta \u670d\u52a1\u5b89\u88c5", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Clash Meta \u670d\u52a1\u542f\u52a8", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Clash Meta \u670d\u52a1\u505c\u6b62", None))
-        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"Tun/\u7cfb\u7edf\u4ee3\u7406 \u6a21\u5f0f\u5207\u6362", None))
-        self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"\u66f4\u65b0 Alpha \u5185\u6838", None))
-        self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"\u66f4\u65b0yacd-meta", None))
-        self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"\u6253\u5f00 Yacd \u9762\u677f", None))
-        self.pushButton_10.setText(QCoreApplication.translate("MainWindow", u"\u4e0b\u8f7d\u914d\u7f6e\u6587\u4ef6", None))
-        self.pushButton_11.setText(QCoreApplication.translate("MainWindow", u"\u66f4\u65b0\u914d\u7f6e\u6587\u4ef6", None))
-        self.pushButton_9.setText(QCoreApplication.translate("MainWindow", u"\u9000\u51fa", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate(
+            "MainWindow", u"CMFW mini 1.8", None))
+        self.label.setText(QCoreApplication.translate(
+            "MainWindow", u"<html><head/><body><p><span style=\" font-size:14pt;\">Clash Meta For Windows Mini</span></p></body></html>", None))
+        self.label_2.setText(QCoreApplication.translate(
+            "MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">\u8fd0\u884c\u72b6\u6001\uff1a</span></p></body></html>", None))
+        self.label_3.setText(QCoreApplication.translate(
+            "MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">NaN</span></p></body></html>", None))
+        self.label_4.setText(QCoreApplication.translate(
+            "MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">\u5185\u5b58\u5360\u7528\uff1a</span></p></body></html>", None))
+        self.label_5.setText(QCoreApplication.translate(
+            "MainWindow", u"<html><head/><body><p><span style=\" font-size:12pt;\">NaN</span></p></body></html>", None))
+        self.pushButton_7.setText(QCoreApplication.translate(
+            "MainWindow", u"Clash Meta \u670d\u52a1\u5b89\u88c5", None))
+        self.pushButton_8.setText(QCoreApplication.translate(
+            "MainWindow", u"Clash Meta \u670d\u52a1\u5b89\u88c5", None))
+        self.pushButton.setText(QCoreApplication.translate(
+            "MainWindow", u"Clash Meta \u670d\u52a1\u542f\u52a8", None))
+        self.pushButton_2.setText(QCoreApplication.translate(
+            "MainWindow", u"Clash Meta \u670d\u52a1\u505c\u6b62", None))
+        self.pushButton_3.setText(QCoreApplication.translate(
+            "MainWindow", u"Tun/\u7cfb\u7edf\u4ee3\u7406 \u6a21\u5f0f\u5207\u6362", None))
+        self.pushButton_5.setText(QCoreApplication.translate(
+            "MainWindow", u"\u66f4\u65b0 Alpha \u5185\u6838", None))
+        self.pushButton_4.setText(QCoreApplication.translate(
+            "MainWindow", u"\u66f4\u65b0yacd-meta", None))
+        self.pushButton_6.setText(QCoreApplication.translate(
+            "MainWindow", u"\u6253\u5f00 Yacd \u9762\u677f", None))
+        self.pushButton_10.setText(QCoreApplication.translate(
+            "MainWindow", u"\u4e0b\u8f7d\u914d\u7f6e\u6587\u4ef6", None))
+        self.pushButton_11.setText(QCoreApplication.translate(
+            "MainWindow", u"\u66f4\u65b0\u914d\u7f6e\u6587\u4ef6", None))
+        self.pushButton_9.setText(QCoreApplication.translate(
+            "MainWindow", u"\u9000\u51fa", None))
     # retranslateUi
-

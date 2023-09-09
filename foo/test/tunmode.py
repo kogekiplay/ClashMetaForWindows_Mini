@@ -6,8 +6,7 @@ from winreg import OpenKey, QueryValueEx, SetValueEx
 from winreg import HKEY_CURRENT_USER, KEY_ALL_ACCESS
 import ctypes
 import os
-import sys
-import subprocess
+from foo.test.firmware import FirewallManager
 from foo.test.checkconfig import getproxyport, getuiport, tun_yaml_mod
 
 PROXIES = {
@@ -57,9 +56,8 @@ def enable_default_proxy():
 def disable_proxy():
     return set_proxy('off')
 
+
 # tun/系统代理模式切换
-
-
 def proxyswitch():
     uiport = getuiport()
     url = f"http://127.0.0.1:{uiport}/configs"
@@ -67,30 +65,59 @@ def proxyswitch():
     config = json.loads(response.read())
     tunstatus = config["tun"]["enable"]
     if tunstatus == False:
-        paramdata = json.dumps({
-            "tun": {
-                "enable": True
-            }
-        })
-        controlfirmware()  # 允许通过Windows防火墙
-        response = requests.patch(url, data=paramdata)
-        result = response.status_code
-        if result == 204:
-            disable_proxy()
-            tun_yaml_mod("open")
-            return True
+        firewall_manager = FirewallManager()
+        enable_firmware = True  # Change this to True or False as needed
+        firewall_manager.control_firmware(
+            enable=enable_firmware)
+        switch_tun_mode(True)
+        tun_yaml_mod("open")
+        return True
     elif tunstatus == True:
-        paramdata = json.dumps({
-            "tun": {
-                "enable": False
-            }
-        })
-        response = requests.patch(url, data=paramdata)
-        result = response.status_code
-        if result == 204:
-            enable_default_proxy()
-            tun_yaml_mod("close")
-            return False
+        switch_tun_mode(False)
+        tun_yaml_mod("close")
+        return False
+
+    #     paramdata = json.dumps({
+    #         "tun": {
+    #             "enable": True
+    #         }
+    #     })
+    #     response = requests.patch(url, data=paramdata)
+    #     result = response.status_code
+    #     if result == 204:
+    #         disable_proxy()
+    #         tun_yaml_mod("open")
+    #         return True
+    # elif tunstatus == True:
+    #     paramdata = json.dumps({
+    #         "tun": {
+    #             "enable": False
+    #         }
+    #     })
+    #     response = requests.patch(url, data=paramdata)
+    #     result = response.status_code
+    #     if result == 204:
+    #         enable_default_proxy()
+    #         tun_yaml_mod("close")
+    #         return False
+
+
+# 开关tun模式
+def switch_tun_mode(tun_enable: False):
+    uiport = getuiport()
+    uiport = getuiport()
+    url = f"http://127.0.0.1:{uiport}/configs"
+    paramdata = json.dumps({
+        "tun": {
+            "enable": tun_enable
+        }
+    })
+    response = requests.patch(url, data=paramdata)
+    result = response.status_code
+    if result == 204:
+        disable_proxy()
+        tun_yaml_mod("open")
+        return True
 
 
 def getclashpath():
@@ -99,39 +126,4 @@ def getclashpath():
         os.path.dirname(os.path.abspath(__file__)), '../bin/clash.exe'))
     return clash_path
 
-# Clash.exe 放行windows防火墙
-
-
-def controlfirmware():
-    clash_path = getclashpath()
-    rule_name = "Clash Meta For Windows Mini"
-    output = subprocess.check_output(
-        ["netsh", "advfirewall", "firewall", "show", "rule", "name="f"{rule_name}"""])
-    if b"No rules match the specified criteria." in output:
-        addrule(clash_path)
-    else:
-        # print(f"Rule {rule_name} already exists，将重新添加")
-        subprocess.call(["netsh", "advfirewall", "firewall", "delete", "rule",
-                        "name=""Clash Meta For Windows Mini"""], stdout=subprocess.DEVNULL)
-        addrule(clash_path)
-
-
-def addrule(clash_path: str):
-    if is_admin():
-        subprocess.call(["netsh", "advfirewall", "firewall", "add", "rule", "name=""Clash Meta For Windows Mini""", "dir=in",
-                        "action=allow", f"program="f"{clash_path}""", "enable=yes", "description=""1"""], stdout=subprocess.DEVNULL)
-        # subprocess.run(["netsh", "advfirewall", "firewall", "delete", "rule", "name=\"Clash\""])
-    else:
-        # Re-run the program with admin rights
-        ctypes.windll.shell32.ShellExecuteW(
-            None, "runas", sys.executable, __file__, None, 1)
-
-
-def is_admin():
-    try:
-        return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
-        return False
-
-# if __name__== "__main__" :
-#    enable_default_proxy()
+# if __name__ == "__main__":
