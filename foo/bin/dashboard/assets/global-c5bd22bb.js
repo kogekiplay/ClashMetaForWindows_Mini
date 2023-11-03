@@ -1,1 +1,0 @@
-import{c as o}from"./vendor-9d884d62.js";const l=()=>{const[c,e]=o({}),a=(t,s)=>{e({...c(),[t]:s})};return{map:c,set:a,setWithCallback:async(t,s)=>{a(t,!0);try{await s()}catch{}a(t,!1)}}};export{l as u};

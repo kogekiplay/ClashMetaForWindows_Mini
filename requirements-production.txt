@@ -1,8 +1,0 @@
-Requests
-PySide6
-pypiwin32
-pyyaml
-global_hotkeys
-psutil
-winshell
-pyinstaller

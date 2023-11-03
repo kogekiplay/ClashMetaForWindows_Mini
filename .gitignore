@@ -1,8 +1,0 @@
-**/__pycache__
-build
-dist
-config.yaml
-o
-myenv
-foo/bin/resources/ruleset
-.vscode
